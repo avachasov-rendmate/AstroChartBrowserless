@@ -111,7 +111,6 @@ export interface Settings {
     DIGNITIES_EXACT_EXALTATION: string;
     DIGNITIES_FALL: string;
     DIGNITIES_EXACT_EXALTATION_DEFAULT: Dignity[];
-    ANIMATION_CUSPS_ROTATION_SPEED: number;
     DEBUG: boolean;
 }
 declare const default_settings: Settings;

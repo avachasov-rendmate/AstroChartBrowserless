@@ -15,13 +15,16 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   mode: 'production',
+  experiments: {
+    outputModule: true
+  },
   output: {
-    clean: true,
+    // clean: true,
     path: path.resolve(__dirname, 'dist'),
-    filename: 'astrochart.js',
+    filename: 'astro-chart-browserless.js',
     library: {
-      name: 'astrochart',
-      type: 'umd'
+      // name: 'astro-chart-browserless',
+      type: 'module',
     }
   },
 }

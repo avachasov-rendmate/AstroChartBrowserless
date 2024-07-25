@@ -15,11 +15,12 @@ import SVG from './svg';
  */
 declare class Chart {
     paper: SVG;
+    document: any;
     cx: number;
     cy: number;
     radius: number;
     settings: Settings;
-    constructor(elementId: string, width: number, height: number, settings?: Partial<Settings>);
+    constructor(document: any, elementId: string, width: number, height: number, settings?: Partial<Settings>);
     /**
    * Display radix horoscope
    *

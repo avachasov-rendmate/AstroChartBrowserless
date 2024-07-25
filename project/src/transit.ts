@@ -1,7 +1,6 @@
 import Zodiac from './zodiac'
 import AspectCalculator from './aspect'
 import type { FormedAspect } from './aspect'
-import Animator from './animation/animator'
 import { validate, getEmptyWrapper, getPointPosition, getRulerPositions, getDescriptionPosition, assemble, radiansToDegree } from './utils'
 import type { AstroData, LocatedPoint, Points } from './radix'
 import type Radix from './radix'
@@ -18,6 +17,7 @@ import type { Settings } from './settings'
    * @param {Object} data
    */
 class Transit {
+  document: any
   data: AstroData
   paper: SVG
   cx: number
@@ -31,13 +31,14 @@ class Transit {
   universe: Element
   context: this
   locatedPoints: LocatedPoint[]
-  constructor(radix: Radix, data: AstroData, settings: Settings) {
+  constructor(document: any, radix: Radix, data: AstroData, settings: Settings) {
     // Validate data
     const status = validate(data)
     if (status.hasError) {
       throw new Error(status.messages.join(' | '))
     }
 
+    this.document = document
     this.data = data
     this.paper = radix.paper
     this.cx = radix.cx
@@ -51,7 +52,7 @@ class Transit {
 
     this.shift = radix.shift
 
-    this.universe = document.createElementNS(this.paper.root.namespaceURI, 'g')
+    this.universe = this.document.createElementNS(this.paper.root.namespaceURI, 'g')
     this.universe.setAttribute('id', this.paper._paperElementId + '-' + this.settings.ID_TRANSIT)
     this.paper.root.appendChild(this.universe)
 
@@ -64,7 +65,7 @@ class Transit {
   drawBg(): void {
     const universe = this.universe
 
-    const wrapper = getEmptyWrapper(universe, this.paper._paperElementId + '-' + this.settings.ID_BG, this.paper._paperElementId)
+    const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_BG, this.paper._paperElementId)
 
     const LARGE_ARC_FLAG = 1
     const start = 0 // degree
@@ -86,7 +87,7 @@ class Transit {
     }
 
     const universe = this.universe
-    const wrapper = getEmptyWrapper(universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_POINTS, this.paper._paperElementId)
+    const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_POINTS, this.paper._paperElementId)
 
     const gap = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO)
     const step = (gap - 2 * (this.settings.PADDING * this.settings.SYMBOL_SCALE)) / Object.keys(planets).length
@@ -154,7 +155,7 @@ class Transit {
  */
   drawCircles(): void {
     const universe = this.universe
-    const wrapper = getEmptyWrapper(universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_CIRCLES, this.paper._paperElementId)
+    const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_CIRCLES, this.paper._paperElementId)
     const radius = this.radius + this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO
 
     const circle = this.paper.circle(this.cx, this.cy, radius)
@@ -175,7 +176,7 @@ class Transit {
 
     let bottomPosition
     const universe = this.universe
-    const wrapper = getEmptyWrapper(universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_CUSPS, this.paper._paperElementId)
+    const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_CUSPS, this.paper._paperElementId)
     const numbersRadius = this.radius + ((this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO - this.rulerRadius) / 2)
 
     const AS = 0
@@ -207,7 +208,7 @@ class Transit {
 
   drawRuler(): void {
     const universe = this.universe
-    const wrapper = getEmptyWrapper(universe, this.paper.root.id + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_RULER, this.paper._paperElementId)
+    const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_RULER, this.paper._paperElementId)
 
     const startRadius = (this.radius + (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO))
     const rays = getRulerPositions(this.cx, this.cy, startRadius, startRadius - this.rulerRadius, this.shift, this.settings)
@@ -235,7 +236,7 @@ class Transit {
       : new AspectCalculator(this.toPoints, this.settings).transit(this.data.planets)
 
     const universe = this.universe
-    const wrapper = getEmptyWrapper(universe, this.paper.root.id + '-' + this.settings.ID_ASPECTS, this.paper._paperElementId)
+    const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_ASPECTS, this.paper._paperElementId)
 
     for (let i = 0, ln = aspectsList.length; i < ln; i++) {
       const startPoint = getPointPosition(this.cx, this.cy, this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO, aspectsList[i].toPoint.position + this.shift, this.settings)
@@ -253,41 +254,6 @@ class Transit {
 
       wrapper.appendChild(line)
     }
-
-    // this
-    return this.context
-  }
-
-  /**
- * Moves points to another position.
- *
-  * @param {Object} data - planets target positions.
-  * @param {Integer} duration - in seconds
-  * @param {boolean} isReverse
-  * @param {Function | undefined} callbck - the function executed at the end of animation
- */
-  animate(data: AstroData, duration: number, isReverse: boolean, callback: () => void): Transit {
-    // Validate data
-    const status = validate(data)
-    if (status.hasError) {
-      throw new Error(status.messages.join(' | '))
-    }
-
-    // remove aspects
-    getEmptyWrapper(this.universe, this.paper._paperElementId + '-' + this.settings.ID_ASPECTS, this.paper._paperElementId)
-
-    const animator = new Animator(this.context, this.settings)
-    animator.animate(data, duration, isReverse, function () {
-      // animation is finished
-      this.data = data
-      this.drawPoints()
-      this.drawCusps()
-      this.aspects()
-
-      if (typeof callback === 'function') {
-        callback()
-      }
-    }.bind(this))
 
     // this
     return this.context

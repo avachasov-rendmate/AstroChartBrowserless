@@ -56,7 +56,7 @@ export declare const validate: (data: AstroData) => {
    * @param{DOMElement} parent
    * @return {DOMElement}
    */
-export declare const getEmptyWrapper: (parent: Element, elementID: string, _paperElementId: string) => Element;
+export declare const getEmptyWrapper: (document: any, parent: Element, elementID: string, _paperElementId: string) => Element;
 /**
   * Remove childs
   *

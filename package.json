@@ -1,7 +1,7 @@
 {
-  "name": "@astrodraw/astrochart",
-  "version": "3.0.2",
-  "description": "A free and open-source JavaScript library for generating SVG charts to display planets in astrology.",
+  "name": "astro-chart-browserless",
+  "version": "1.0.0",
+  "description": "A free and open-source Nodejs library for generating SVG charts to display planets in astrology.",
   "keywords": [
     "astrology",
     "chart",
@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/AstroDraw/AstroChart.git"
   },
-  "main": "./dist/astrochart.js",
+  "main": "./dist/astro-chart-browserless.js",
   "types": "./dist/project/src/index.d.ts",
   "scripts": {
     "test": "jest",

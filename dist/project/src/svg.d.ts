@@ -14,10 +14,11 @@ declare class SVG {
     _paperElementId: string;
     DOMElement: SVGSVGElement;
     root: Element;
+    document: any;
     width: number;
     height: number;
     context: this;
-    constructor(elementId: string, width: number, height: number, settings: Settings);
+    constructor(document: any, elementId: string, width: number, height: number, settings: Settings);
     _getSymbol(name: string, x: number, y: number): Element;
     /**
      * Get a required symbol.

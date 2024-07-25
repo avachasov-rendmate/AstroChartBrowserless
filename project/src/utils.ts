@@ -95,7 +95,7 @@ export const validate = (data: AstroData): { hasError: boolean; messages: string
    * @param{DOMElement} parent
    * @return {DOMElement}
    */
-export const getEmptyWrapper = (parent: Element, elementID: string, _paperElementId: string): Element => {
+export const getEmptyWrapper = (document: any, parent: Element, elementID: string, _paperElementId: string): Element => {
   const element = document.getElementById(elementID)
   if (element != null) {
     removeChilds(element)

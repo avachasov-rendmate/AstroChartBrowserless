@@ -109,7 +109,6 @@ export interface Settings {
   DIGNITIES_EXACT_EXALTATION: string
   DIGNITIES_FALL: string
   DIGNITIES_EXACT_EXALTATION_DEFAULT: Dignity[]
-  ANIMATION_CUSPS_ROTATION_SPEED: number
   DEBUG: boolean
 }
 
@@ -308,10 +307,6 @@ const settings: Settings = {
     { name: 'Saturn', position: 201, orbit: 2 }, // 21 Libra
     { name: 'NNode', position: 63, orbit: 2 } // 3 Geminy
   ],
-
-  // 0 - 4
-  ANIMATION_CUSPS_ROTATION_SPEED: 2,
-
   DEBUG: false
 }
 

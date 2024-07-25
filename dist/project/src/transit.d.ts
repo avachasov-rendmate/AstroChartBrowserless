@@ -13,6 +13,7 @@ import type { Settings } from './settings';
    * @param {Object} data
    */
 declare class Transit {
+    document: any;
     data: AstroData;
     paper: SVG;
     cx: number;
@@ -26,7 +27,7 @@ declare class Transit {
     universe: Element;
     context: this;
     locatedPoints: LocatedPoint[];
-    constructor(radix: Radix, data: AstroData, settings: Settings);
+    constructor(document: any, radix: Radix, data: AstroData, settings: Settings);
     /**
      * Draw background
      */
@@ -52,14 +53,5 @@ declare class Transit {
    * @param{Array<Object> | null} customAspects - posible custom aspects to draw;
    */
     aspects(customAspects: FormedAspect[]): Transit;
-    /**
-   * Moves points to another position.
-   *
-    * @param {Object} data - planets target positions.
-    * @param {Integer} duration - in seconds
-    * @param {boolean} isReverse
-    * @param {Function | undefined} callbck - the function executed at the end of animation
-   */
-    animate(data: AstroData, duration: number, isReverse: boolean, callback: () => void): Transit;
 }
 export default Transit;

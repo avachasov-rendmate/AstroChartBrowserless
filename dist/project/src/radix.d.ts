@@ -32,6 +32,7 @@ declare class Radix {
     settings: Settings;
     data: AstroData;
     paper: SVG;
+    document: any;
     cx: number;
     cy: number;
     radius: number;
@@ -42,7 +43,7 @@ declare class Radix {
     shift: number;
     universe: Element;
     context: this;
-    constructor(paper: SVG, cx: number, cy: number, radius: number, data: AstroData, settings: Settings);
+    constructor(document: any, paper: SVG, cx: number, cy: number, radius: number, data: AstroData, settings: Settings);
     /**
      * Draw background
      */
