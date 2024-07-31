@@ -13,6 +13,7 @@ export interface Dignity {
 export interface Gradient {
     start: string;
     stop: string;
+    type: string;
 }
 export interface Settings {
     GRADIENT_ENABLED: boolean;
