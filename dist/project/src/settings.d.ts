@@ -10,7 +10,13 @@ export interface Dignity {
     position: number;
     orbit: number;
 }
+export interface Gradient {
+    start: string;
+    stop: string;
+}
 export interface Settings {
+    GRADIENT_ENABLED: boolean;
+    GRADIENT: Gradient;
     SYMBOL_SCALE: number;
     COLOR_BACKGROUND: string;
     POINTS_COLOR: string;
@@ -84,6 +90,7 @@ export interface Settings {
     SYMBOL_CAPRICORN: string;
     SYMBOL_AQUARIUS: string;
     SYMBOL_PISCES: string;
+    SYMBOL_SIRIUS: string;
     SYMBOL_SIGNS: string[];
     COLOR_ARIES: string;
     COLOR_TAURUS: string;

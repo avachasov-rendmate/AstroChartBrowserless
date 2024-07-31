@@ -91,6 +91,22 @@ class Radix {
     this.context = this
   }
 
+  destroy(): void {
+    this.settings = {} as Settings
+    this.data = {} as AstroData
+    this.paper = {} as SVG
+    this.document = {}
+    this.cx = 0
+    this.cy = 0
+    this.radius = 0
+    this.locatedPoints = []
+    this.rulerRadius = 0
+    this.pointRadius = 0
+    this.toPoints = {}
+    this.shift = 0
+    this.universe = {} as Element
+  }
+
   /**
    * Draw background
    */

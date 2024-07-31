@@ -8,7 +8,14 @@ export interface Dignity {
   orbit: number
 }
 
+export interface Gradient {
+  start: string
+  stop: string
+}
+
 export interface Settings {
+  GRADIENT_ENABLED: boolean
+  GRADIENT: Gradient
   SYMBOL_SCALE: number
   COLOR_BACKGROUND: string
   POINTS_COLOR: string
@@ -82,6 +89,7 @@ export interface Settings {
   SYMBOL_CAPRICORN: string
   SYMBOL_AQUARIUS: string
   SYMBOL_PISCES: string
+  SYMBOL_SIRIUS: string
   SYMBOL_SIGNS: string[]
   COLOR_ARIES: string
   COLOR_TAURUS: string
@@ -113,6 +121,12 @@ export interface Settings {
 }
 
 const settings: Settings = {
+  // Enable / Disable gradient
+  GRADIENT_ENABLED: false,
+  GRADIENT: {
+    start: '#fff',
+    stop: '#f0f0f0'
+  },
 
   // Scale of symbols
   SYMBOL_SCALE: 1,
@@ -249,6 +263,7 @@ const settings: Settings = {
   SYMBOL_CAPRICORN: 'Capricorn',
   SYMBOL_AQUARIUS: 'Aquarius',
   SYMBOL_PISCES: 'Pisces',
+  SYMBOL_SIRIUS: 'Sirius',
   SYMBOL_SIGNS: ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'],
 
   // http://www.rapidtables.com/web/color/html-color-codes.htm

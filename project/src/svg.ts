@@ -56,6 +56,8 @@ class SVG {
         return this.moon(x, y)
       case this.settings.SYMBOL_MERCURY:
         return this.mercury(x, y)
+      case this.settings.SYMBOL_SIRIUS:
+        return this.sirius(x, y)
       case this.settings.SYMBOL_VENUS:
         return this.venus(x, y)
       case this.settings.SYMBOL_MARS:
@@ -205,7 +207,13 @@ class SVG {
   getHouseIdWrapper(house: string): string {
     return this._paperElementId + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_CUSPS + '-' + house
   }
-
+  setPointColor(node: Element): void {
+    if (!this.settings.GRADIENT_ENABLED) {
+      node.setAttribute('stroke', this.settings.POINTS_COLOR)
+    }
+    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
+    node.setAttribute('fill', 'none')
+  }
   /*
    * Sun path
    * @private
@@ -227,9 +235,24 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' -2.18182,0.727268 -2.181819,1.454543 -1.454552,2.18182 -0.727268,2.181819 0,2.181819 0.727268,2.181819 1.454552,2.18182 2.181819,1.454544 2.18182,0.727276 2.18181,0 2.18182,-0.727276 2.181819,-1.454544 1.454552,-2.18182 0.727268,-2.181819 0,-2.181819 -0.727268,-2.181819 -1.454552,-2.18182 -2.181819,-1.454543 -2.18182,-0.727268 -2.18181,0 m 0.727267,6.54545 -0.727267,0.727276 0,0.727275 0.727267,0.727268 0.727276,0 0.727267,-0.727268 0,-0.727275 -0.727267,-0.727276 -0.727276,0 m 0,0.727276 0,0.727275 0.727276,0 0,-0.727275 -0.727276,0')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
+    wrapper.appendChild(node)
+
+    return wrapper
+  }
+  sirius(x: number, y: number): Element { // todo: implement when designer will draw icon
+    // center symbol
+    const xShift = -1 // px
+    const yShift = -8 // px
+    x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
+    y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+
+    const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
+    wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
+
+    const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
+    node.setAttribute('d', 'm' + x + ', ' + y + '')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper
@@ -256,9 +279,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' a 7.4969283,7.4969283 0 0 1 0,14.327462 7.4969283,7.4969283 0 1 0 0,-14.327462 z')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper
@@ -323,9 +344,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' -4.937669,0.03973 m 2.448972,2.364607 0,-5.79014 c -3.109546,-0.0085 -5.624617,-2.534212 -5.620187,-5.64208 0.0044,-3.107706 2.526514,-5.621689 5.635582,-5.621689 3.109068,0 5.631152,2.513983 5.635582,5.621689 0.0044,3.107868 -2.510641,5.633586 -5.620187,5.64208')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper
@@ -352,9 +371,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' c -5.247438,-4.150623 -11.6993,3.205518 -7.018807,7.886007 4.680494,4.680488 12.036628,-1.771382 7.885999,-7.018816 z m 0,0 0.433597,0.433595 3.996566,-4.217419 m -3.239802,-0.05521 3.295015,0 0.110427,3.681507')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper
@@ -381,9 +398,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' c -0.43473,0 -1.30422,-0.40572 -1.30422,-2.02857 0,-1.62285 1.73897,-3.2457 3.47792,-3.2457 1.73897,0 3.47792,1.21715 3.47792,4.05713 0,2.83999 -2.1737,7.30283 -6.52108,7.30283 m 12.17269,0 -12.60745,0 m 9.99902,-11.76567 0,15.82279')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 3))
@@ -412,9 +427,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' c -0.52222,0.52221 -1.04445,1.04444 -1.56666,1.04444 -0.52222,0 -1.56667,-0.52223 -1.56667,-1.56667 0,-1.04443 0.52223,-2.08887 1.56667,-3.13332 1.04444,-1.04443 2.08888,-3.13331 2.08888,-5.22219 0,-2.08888 -1.04444,-4.17776 -3.13332,-4.17776 -1.97566,0 -3.65555,1.04444 -4.69998,3.13333 m -2.55515,-5.87499 6.26664,0 m -3.71149,-2.48054 0,15.14438')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper
@@ -481,9 +494,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' 1.77059,-2.36312 2.31872,1.8045 m -14.44264,-0.20006 2.34113,-1.77418 1.74085,2.38595 m -1.80013,-1.77265 c -1.23776,8.40975 0.82518,9.67121 4.95106,9.67121 4.12589,0 6.18883,-1.26146 4.95107,-9.67121 m -7.05334,3.17005 2.03997,-2.12559 2.08565,2.07903 m -5.32406,9.91162 6.60142,0 m -3.30071,-12.19414 0,15.55803')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper
@@ -586,9 +597,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' -2.525435,-1.12853 -1.464752,-1.79539 -0.808138,-2.20576 0.151526,-2.05188 0.909156,-1.5389 1.010173,-1.02593 0.909157,-0.56427 1.363735,-0.61556 m 2.315327,-0.39055 -1.716301,0.54716 -1.7163,1.09431 -1.1442,1.64146 -0.572102,1.64146 0,1.64146 0.572102,1.64147 1.1442,1.64145 1.7163,1.09432 1.716301,0.54715 m 0,-11.49024 -2.2884,0 -2.288401,0.54716 -1.716302,1.09431 -1.144201,1.64146 -0.5721,1.64146 0,1.64146 0.5721,1.64147 1.144201,1.64145 1.716302,1.09432 2.288401,0.54715 2.2884,0 m -4.36712,-0.4752 0,6.44307 m -2.709107,-3.41101 5.616025,0')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper
@@ -615,9 +624,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' -1.3333334,-0.6666667 -0.6666666,0 -1.3333334,0.6666667 -0.6666667,1.3333333 0,0.6666667 0.6666667,1.3333333 1.3333334,0.6666667 0.6666666,0 1.3333334,-0.6666667 0.6666666,-1.3333333 0,-0.6666667 -0.6666666,-1.3333333 -2,-2.66666665 -0.6666667,-1.99999995 0,-1.3333334 0.6666667,-2 1.3333333,-1.3333333 2,-0.6666667 2.6666666,0 2,0.6666667 1.3333333,1.3333333 0.6666667,2 0,1.3333334 -0.6666667,1.99999995 -2,2.66666665 -0.6666666,1.3333333 0,0.6666667 0.6666666,1.3333333 1.3333334,0.6666667 0.6666666,0 1.3333334,-0.6666667 0.6666667,-1.3333333 0,-0.6666667 -0.6666667,-1.3333333 -1.3333334,-0.6666667 -0.6666666,0 -1.3333334,0.6666667 m -7.9999999,-6 0.6666667,-1.3333333 1.3333333,-1.3333333 2,-0.6666667 2.6666666,0 2,0.6666667 1.3333333,1.3333333 0.6666667,1.3333333')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper
@@ -645,9 +652,7 @@ class SVG {
 
     const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
     node.setAttribute('d', 'm' + x + ', ' + y + ' l1.3333282470703125,0.666656494140625l0.6666717529296875,0l1.3333282470703125,-0.666656494140625l0.6666717529296875,-1.333343505859375l0,-0.666656494140625l-0.6666717529296875,-1.333343505859375l-1.3333282470703125,-0.666656494140625l-0.6666717529296875,0l-1.3333282470703125,0.666656494140625l-0.6666717529296875,1.333343505859375l0,0.666656494140625l0.6666717529296875,1.333343505859375l2,2.666656494140625l0.6666717529296875,2l0,1.333343505859375l-0.6666717529296875,2l-1.3333282470703125,1.333343505859375l-2,0.666656494140625l-2.6666717529296875,0l-2,-0.666656494140625l-1.3333282470703125,-1.333343505859375l-0.6666717529296875,-2l0,-1.333343505859375l0.6666717529296875,-2l2,-2.666656494140625l0.666656494140625,-1.333343505859375l0,-0.666656494140625l-0.666656494140625,-1.333343505859375l-1.333343505859375,-0.666656494140625l-0.666656494140625,0l-1.333343505859375,0.666656494140625l-0.666656494140625,1.333343505859375l0,0.666656494140625l0.666656494140625,1.333343505859375l1.333343505859375,0.666656494140625l0.666656494140625,0l1.333343505859375,-0.666656494140625m8,6l-0.6666717529296875,1.333343505859375l-1.3333282470703125,1.33331298828125l-2,0.66668701171875l-2.6666717529296875,0l-2,-0.66668701171875l-1.3333282470703125,-1.33331298828125l-0.6666717529296875,-1.333343505859375')
-    node.setAttribute('stroke', this.settings.POINTS_COLOR)
-    node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
-    node.setAttribute('fill', 'none')
+    this.setPointColor(node)
     wrapper.appendChild(node)
 
     return wrapper

@@ -25,24 +25,24 @@ class Chart {
   settings: Settings
   constructor (document: any, elementId: string, width: number, height: number, settings?: Partial<Settings>) {
     this.document = document
-    
-    const chartSettings = default_settings
-    if (settings != null) {
-      Object.assign(chartSettings, settings)
-      if (!('COLORS_SIGNS' in settings)) chartSettings.COLORS_SIGNS = [default_settings.COLOR_ARIES, default_settings.COLOR_TAURUS, default_settings.COLOR_GEMINI, default_settings.COLOR_CANCER, default_settings.COLOR_LEO, default_settings.COLOR_VIRGO, default_settings.COLOR_LIBRA, default_settings.COLOR_SCORPIO, default_settings.COLOR_SAGITTARIUS, default_settings.COLOR_CAPRICORN, default_settings.COLOR_AQUARIUS, default_settings.COLOR_PISCES]
+    this.settings = {
+      ...default_settings,
+      ...settings
     }
-
     if ((elementId !== '') && (this.document.getElementById(elementId) == null)) {
       const paper = this.document.createElement('div')
       paper.setAttribute('id', elementId)
       this.document.body.appendChild(paper)
     }
 
-    this.paper = new SVG(this.document, elementId, width, height, chartSettings)
+    this.paper = new SVG(this.document, elementId, width, height, this.settings)
     this.cx = this.paper.width / 2
     this.cy = this.paper.height / 2
-    this.radius = this.paper.height / 2 - chartSettings.MARGIN
-    this.settings = chartSettings
+    this.radius = this.paper.height / 2 - this.settings.MARGIN
+  }
+
+  destroy (): void {
+    this.settings = default_settings
   }
 
   /**

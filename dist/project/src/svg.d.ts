@@ -57,7 +57,9 @@ declare class SVG {
      * @return {String id}
      */
     getHouseIdWrapper(house: string): string;
+    setPointColor(node: Element): void;
     sun(x: number, y: number): Element;
+    sirius(x: number, y: number): Element;
     moon(x: number, y: number): Element;
     mercury(x: number, y: number): Element;
     venus(x: number, y: number): Element;

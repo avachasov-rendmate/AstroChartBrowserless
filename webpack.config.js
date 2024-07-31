@@ -23,8 +23,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'astro-chart-browserless.js',
     library: {
-      // name: 'astro-chart-browserless',
-      type: 'module',
+      name: 'astro',
+      type: 'commonjs2',
     }
   },
 }

@@ -21,6 +21,7 @@ declare class Chart {
     radius: number;
     settings: Settings;
     constructor(document: any, elementId: string, width: number, height: number, settings?: Partial<Settings>);
+    destroy(): void;
     /**
    * Display radix horoscope
    *

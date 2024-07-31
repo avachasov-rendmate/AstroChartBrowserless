@@ -44,6 +44,7 @@ declare class Radix {
     universe: Element;
     context: this;
     constructor(document: any, paper: SVG, cx: number, cy: number, radius: number, data: AstroData, settings: Settings);
+    destroy(): void;
     /**
      * Draw background
      */
