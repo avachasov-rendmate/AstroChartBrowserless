@@ -14,6 +14,7 @@ export interface Gradient {
     start: string;
     stop: string;
     type: string;
+    rotation?: number;
 }
 export interface Settings {
     GRADIENT_ENABLED: boolean;

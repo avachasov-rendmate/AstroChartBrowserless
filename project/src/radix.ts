@@ -127,15 +127,17 @@ class Radix {
    */
   drawUniverse(): void {
     const universe = this.universe
+    const strokeMode = this.settings.STROKE_ONLY || this.settings.GRADIENT_ENABLED
     const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS, this.paper.root.id)
-
     // colors
     for (let i = 0, step = 30, start = this.shift, len = this.settings.COLORS_SIGNS.length; i < len; i++) {
       const segment = this.paper.segment(this.cx, this.cy, this.radius, start, start + step, this.radius - this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO)
-      segment.setAttribute('fill', this.settings.STROKE_ONLY ? 'none' : this.settings.COLORS_SIGNS[i])
+      segment.setAttribute('fill', strokeMode ? 'none' : this.settings.COLORS_SIGNS[i])
       segment.setAttribute('id', this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS + '-' + i)
-      segment.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.CIRCLE_COLOR : 'none')
-      segment.setAttribute('stroke-width', this.settings.STROKE_ONLY ? '1' : '0')
+      if (!this.settings.GRADIENT_ENABLED) {
+        segment.setAttribute('stroke', strokeMode ? this.settings.CIRCLE_COLOR : 'none')
+      }
+      segment.setAttribute('stroke-width', strokeMode ? '1' : '0')
       wrapper.appendChild(segment)
 
       start += step
@@ -183,7 +185,11 @@ class Radix {
       startPosition = getPointPosition(this.cx, this.cy, pointerRadius, this.data.planets[point.name][0] + this.shift, this.settings)
       endPosition = getPointPosition(this.cx, this.cy, pointerRadius - this.rulerRadius / 2, this.data.planets[point.name][0] + this.shift, this.settings)
       const pointer = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
-      pointer.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      if (this.settings.GRADIENT_ENABLED) {
+        pointer.setAttribute('fill', 'none')
+      } else {
+        pointer.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      }
       pointer.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
       wrapper.appendChild(pointer)
 
@@ -192,7 +198,12 @@ class Radix {
         startPosition = endPosition
         endPosition = getPointPosition(this.cx, this.cy, this.pointRadius + (this.settings.COLLISION_RADIUS * this.settings.SYMBOL_SCALE), point.angle, this.settings)
         const line = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
-        line.setAttribute('stroke', this.settings.LINE_COLOR)
+
+        if (this.settings.GRADIENT_ENABLED) {
+          line.setAttribute('fill', 'none')
+        } else {
+          line.setAttribute('stroke', this.settings.LINE_COLOR)
+        }
         line.setAttribute('stroke-width', 0.5 * (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
         wrapper.appendChild(line)
       }
@@ -247,7 +258,11 @@ class Radix {
       startPosition = getPointPosition(this.cx, this.cy, this.radius, this.data.cusps[i] + this.shift, this.settings)
       endPosition = getPointPosition(this.cx, this.cy, axisRadius, this.data.cusps[i] + this.shift, this.settings)
       overlapLine = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
-      overlapLine.setAttribute('stroke', this.settings.LINE_COLOR)
+      if (this.settings.GRADIENT_ENABLED) {
+        overlapLine.setAttribute('fill', 'none')
+      } else {
+        overlapLine.setAttribute('stroke', this.settings.LINE_COLOR)
+      }
       overlapLine.setAttribute('stroke-width', (this.settings.SYMBOL_AXIS_STROKE * this.settings.SYMBOL_SCALE))
       wrapper.appendChild(overlapLine)
 
@@ -317,7 +332,11 @@ class Radix {
 
       lines.forEach(function (line) {
         const newLine = this.paper.line(line.startX, line.startY, line.endX, line.endY)
-        newLine.setAttribute('stroke', this.settings.LINE_COLOR)
+        if (this.settings.GRADIENT_ENABLED) {
+          newLine.setAttribute('fill', 'none')
+        } else {
+          newLine.setAttribute('stroke', this.settings.LINE_COLOR)
+        }
 
         if (mainAxis.includes(i)) {
           newLine.setAttribute('stroke-width', (this.settings.SYMBOL_AXIS_STROKE * this.settings.SYMBOL_SCALE))
@@ -362,7 +381,11 @@ class Radix {
         const endPoint = getPointPosition(this.cx, this.cy, this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO, aspectsList[i].point.position + this.shift, this.settings)
 
         const line = this.paper.line(startPoint.x, startPoint.y, endPoint.x, endPoint.y)
-        line.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.LINE_COLOR : aspectsList[i].aspect.color)
+        if (this.settings.GRADIENT_ENABLED) {
+          line.setAttribute('fill', 'none')
+        } else {
+          line.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.LINE_COLOR : aspectsList[i].aspect.color)
+        }
         line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
 
         line.setAttribute('data-name', aspectsList[i].aspect.name)
@@ -402,13 +425,21 @@ class Radix {
 
     rays.forEach(function (ray) {
       const line = this.paper.line(ray.startX, ray.startY, ray.endX, ray.endY)
-      line.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      if (this.settings.GRADIENT_ENABLED) {
+        line.setAttribute('fill', 'none')
+      } else {
+        line.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      }
       line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
       wrapper.appendChild(line)
     }, this)
 
     const circle = this.paper.circle(this.cx, this.cy, startRadius)
-    circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+    if (this.settings.GRADIENT_ENABLED) {
+      circle.setAttribute('fill', 'none')
+    } else {
+      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+    }
     circle.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
   }
@@ -422,19 +453,31 @@ class Radix {
 
     // indoor circle
     let circle = this.paper.circle(this.cx, this.cy, this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO)
-    circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+    if (this.settings.GRADIENT_ENABLED) {
+      circle.setAttribute('fill', 'none')
+    } else {
+      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+    }
     circle.setAttribute('stroke-width', (this.settings.CIRCLE_STRONG * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
 
     // outdoor circle
     circle = this.paper.circle(this.cx, this.cy, this.radius)
-    circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+    if (this.settings.GRADIENT_ENABLED) {
+      circle.setAttribute('fill', 'none')
+    } else {
+      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+    }
     circle.setAttribute('stroke-width', (this.settings.CIRCLE_STRONG * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
 
     // inner circle
     circle = this.paper.circle(this.cx, this.cy, this.radius - this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO)
-    circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+    if (this.settings.GRADIENT_ENABLED) {
+      circle.setAttribute('fill', 'none')
+    } else {
+      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+    }
     circle.setAttribute('stroke-width', (this.settings.CIRCLE_STRONG * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
   }

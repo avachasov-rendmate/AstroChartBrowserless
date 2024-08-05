@@ -10,8 +10,9 @@ export interface Dignity {
 
 export interface Gradient {
   start: string
-  stop: string,
+  stop: string
   type: string
+  rotation?: number
 }
 
 export interface Settings {
@@ -127,7 +128,8 @@ const settings: Settings = {
   GRADIENT: {
     start: '#fff',
     stop: '#f0f0f0',
-    type: 'linear'
+    type: 'linear',
+    rotation: 45
   },
 
   // Scale of symbols

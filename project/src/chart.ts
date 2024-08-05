@@ -97,11 +97,19 @@ class Chart {
       positions = getPointPosition(this.cx, this.cy, this.radius * 2, planet * 30, this.settings)
 
       line = this.paper.line(this.cx, this.cy, positions.x, positions.y)
-      line.setAttribute('stroke', this.settings.LINE_COLOR)
+      if (this.settings.GRADIENT_ENABLED) {
+        line.setAttribute('fill', 'none')
+      } else {
+        line.setAttribute('stroke', this.settings.LINE_COLOR)
+      }
       this.paper.root.appendChild(line)
 
       circle = this.paper.circle(this.cx, this.cy, startRadius + startRadius * planet)
-      circle.setAttribute('stroke', this.settings.LINE_COLOR)
+      if (this.settings.GRADIENT_ENABLED) {
+        circle.setAttribute('fill', 'none')
+      } else {
+        circle.setAttribute('stroke', this.settings.LINE_COLOR)
+      }
       circle.setAttribute('stroke-width', '1')
       this.paper.root.appendChild(circle)
     }

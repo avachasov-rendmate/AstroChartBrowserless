@@ -32,45 +32,45 @@ class SVG {
     svg.setAttribute('width', width.toString())
     svg.setAttribute('height', height.toString())
     svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height)
-    rootElement.appendChild(svg);
-
-    const
-      defs = this.document.createElementNS(svg.namespaceURI, 'defs'),
-      gradientDefId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-      gradientMaskId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-      gradientDef = this.document.createElementNS(svg.namespaceURI, `${this.settings.GRADIENT.type}Gradient`),
-      gradientMask = this.document.createElementNS(svg.namespaceURI, `${this.settings.GRADIENT.type}Gradient`),
-      start = this.document.createElementNS(svg.namespaceURI, 'stop'),
-      stop = this.document.createElementNS(svg.namespaceURI, 'stop')
-
-    gradientDef.setAttribute('id', gradientDefId);
-    start.setAttribute('stop-color', this.settings.GRADIENT.start);
-    start.setAttribute('offset', '0');
-    start.setAttribute('stop-opacity', '1');
-    stop.setAttribute('stop-color', this.settings.GRADIENT.stop);
-    stop.setAttribute('offset', '1');
-    stop.setAttribute('stop-opacity', '1');
-    gradientDef.appendChild(start);
-    gradientDef.appendChild(stop);
-
-    gradientMask.setAttribute('id', gradientMaskId);
-    gradientMask.setAttribute('xlink:href', `#${gradientDefId}`);
-    gradientMask.setAttribute('gradientUnits', 'userSpaceOnUse');
-
-    gradientDef.appendChild(start);
-    gradientDef.appendChild(stop);
-
-    defs.appendChild(gradientDef);
-    defs.appendChild(gradientMask);
-    svg.appendChild(defs);
-
+    rootElement.appendChild(svg)
     this._paperElementId = elementId + '-' + this.settings.ID_CHART
 
     const wrapper = this.document.createElementNS(svg.namespaceURI, 'g')
     wrapper.setAttribute('id', this._paperElementId)
-    wrapper.setAttribute('style',
-        `fill:url(#${gradientMaskId});fill-opacity:1; stroke:url(#${gradientMaskId})`
-    )
+
+    if (this.settings.GRADIENT_ENABLED) {
+      const
+        defs = this.document.createElementNS(svg.namespaceURI, 'defs'),
+        gradientDefId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+        gradientMaskId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+        gradientDef = this.document.createElementNS(svg.namespaceURI, `${this.settings.GRADIENT.type}Gradient`),
+        gradientMask = this.document.createElementNS(svg.namespaceURI, `${this.settings.GRADIENT.type}Gradient`),
+        start = this.document.createElementNS(svg.namespaceURI, 'stop'),
+        stop = this.document.createElementNS(svg.namespaceURI, 'stop')
+
+      gradientDef.setAttribute('id', gradientDefId)
+      gradientDef.setAttribute('gradientTransform', `rotate(${this.settings.GRADIENT.rotation || 0})`)
+      start.setAttribute('stop-color', this.settings.GRADIENT.start)
+      start.setAttribute('offset', '0')
+      start.setAttribute('stop-opacity', '1')
+      stop.setAttribute('stop-color', this.settings.GRADIENT.stop)
+      stop.setAttribute('offset', '1')
+      stop.setAttribute('stop-opacity', '1')
+      gradientDef.appendChild(start)
+      gradientDef.appendChild(stop)
+
+      gradientMask.setAttribute('id', gradientMaskId)
+      gradientMask.setAttribute('xlink:href', `#${gradientDefId}`)
+      gradientMask.setAttribute('gradientUnits', 'userSpaceOnUse')
+
+      gradientDef.appendChild(start)
+      gradientDef.appendChild(stop)
+
+      defs.appendChild(gradientDef)
+      defs.appendChild(gradientMask)
+      svg.appendChild(defs)
+      wrapper.setAttribute('style', `fill:url(#${gradientMaskId});fill-opacity:1; stroke:url(#${gradientMaskId})`)
+    }
     svg.appendChild(wrapper)
 
     this.DOMElement = svg
@@ -727,7 +727,7 @@ class SVG {
     fortuneGroup.appendChild(path1)
     fortuneGroup.appendChild(path2)
     fortuneGroup.appendChild(path3)
-    this.setPointColor(fortuneGroup);
+    this.setPointColor(fortuneGroup)
     wrapper.appendChild(fortuneGroup)
 
 
