@@ -111,15 +111,17 @@ class Radix {
    * Draw background
    */
   drawBg(): void {
-    const universe = this.universe
-    const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_BG, this.paper.root.id)
+    if (!this.settings.GRADIENT_ENABLED) {
+      const universe = this.universe
+      const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_BG, this.paper.root.id)
 
-    const LARGE_ARC_FLAG = 1
-    const start = 0 // degree
-    const end = 359.99 // degree
-    const hemisphere = this.paper.segment(this.cx, this.cy, this.radius - this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO, start, end, this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO, LARGE_ARC_FLAG)
-    hemisphere.setAttribute('fill', this.settings.STROKE_ONLY ? 'none' : this.settings.COLOR_BACKGROUND)
-    wrapper.appendChild(hemisphere)
+      const LARGE_ARC_FLAG = 1
+      const start = 0 // degree
+      const end = 359.99 // degree
+      const hemisphere = this.paper.segment(this.cx, this.cy, this.radius - this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO, start, end, this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO, LARGE_ARC_FLAG)
+      hemisphere.setAttribute('fill', this.settings.STROKE_ONLY ? 'none' : this.settings.COLOR_BACKGROUND)
+      wrapper.appendChild(hemisphere)
+    }
   }
 
   /**
@@ -130,12 +132,13 @@ class Radix {
     const strokeMode = this.settings.STROKE_ONLY || this.settings.GRADIENT_ENABLED
     const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS, this.paper.root.id)
     // colors
-    for (let i = 0, step = 30, start = this.shift, len = this.settings.COLORS_SIGNS.length; i < len; i++) {
+    for (let i = 0, step = 30, start = this.shift, len = 12; i < len; i++) {
       const segment = this.paper.segment(this.cx, this.cy, this.radius, start, start + step, this.radius - this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO)
-      segment.setAttribute('fill', strokeMode ? 'none' : this.settings.COLORS_SIGNS[i])
+      const currentColor = i % 2 ? this.settings.COLOR_SIGN_BG_LIGHT : this.settings.COLOR_SIGN_BG_DARK
+      segment.setAttribute('fill', strokeMode ? 'none' : currentColor)
       segment.setAttribute('id', this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS + '-' + i)
       if (!this.settings.GRADIENT_ENABLED) {
-        segment.setAttribute('stroke', strokeMode ? this.settings.CIRCLE_COLOR : 'none')
+        segment.setAttribute('stroke', strokeMode ? this.settings.COLOR_CIRCLES : 'none')
       }
       segment.setAttribute('stroke-width', strokeMode ? '1' : '0')
       wrapper.appendChild(segment)
@@ -188,7 +191,7 @@ class Radix {
       if (this.settings.GRADIENT_ENABLED) {
         pointer.setAttribute('fill', 'none')
       } else {
-        pointer.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+        pointer.setAttribute('stroke', this.settings.COLOR_CIRCLES)
       }
       pointer.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
       wrapper.appendChild(pointer)
@@ -202,7 +205,7 @@ class Radix {
         if (this.settings.GRADIENT_ENABLED) {
           line.setAttribute('fill', 'none')
         } else {
-          line.setAttribute('stroke', this.settings.LINE_COLOR)
+          line.setAttribute('stroke', this.settings.COLOR_LINES)
         }
         line.setAttribute('stroke-width', 0.5 * (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
         wrapper.appendChild(line)
@@ -224,12 +227,11 @@ class Radix {
         textsToShow.push('')
       }
 
-      if (this.settings.SHOW_DIGNITIES_TEXT)
-        textsToShow = textsToShow.concat(zodiac.getDignities({ name: point.name, position: this.data.planets[point.name][0] }, this.settings.DIGNITIES_EXACT_EXALTATION_DEFAULT).join(','))
+      textsToShow = textsToShow.concat(zodiac.getDignities({ name: point.name, position: this.data.planets[point.name][0] }, this.settings.DIGNITIES_EXACT_EXALTATION_DEFAULT).join(','))
 
       const pointDescriptions = getDescriptionPosition(point, textsToShow, this.settings)
       pointDescriptions.forEach(function (dsc) {
-        wrapper.appendChild(this.paper.text(dsc.text, dsc.x, dsc.y, this.settings.POINTS_TEXT_SIZE, this.settings.SIGNS_COLOR))
+        wrapper.appendChild(this.paper.text(dsc.text, dsc.x, dsc.y, this.settings.POINTS_TEXT_SIZE, this.settings.COLOR_NUMBERS))
       }, this)
     }, this)
   }
@@ -261,7 +263,7 @@ class Radix {
       if (this.settings.GRADIENT_ENABLED) {
         overlapLine.setAttribute('fill', 'none')
       } else {
-        overlapLine.setAttribute('stroke', this.settings.LINE_COLOR)
+        overlapLine.setAttribute('stroke', this.settings.COLOR_LINES)
       }
       overlapLine.setAttribute('stroke-width', (this.settings.SYMBOL_AXIS_STROKE * this.settings.SYMBOL_SCALE))
       wrapper.appendChild(overlapLine)
@@ -335,7 +337,7 @@ class Radix {
         if (this.settings.GRADIENT_ENABLED) {
           newLine.setAttribute('fill', 'none')
         } else {
-          newLine.setAttribute('stroke', this.settings.LINE_COLOR)
+          newLine.setAttribute('stroke', this.settings.COLOR_LINES)
         }
 
         if (mainAxis.includes(i)) {
@@ -384,7 +386,7 @@ class Radix {
         if (this.settings.GRADIENT_ENABLED) {
           line.setAttribute('fill', 'none')
         } else {
-          line.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.LINE_COLOR : aspectsList[i].aspect.color)
+          line.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.COLOR_LINES : aspectsList[i].aspect.color)
         }
         line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
 
@@ -428,7 +430,7 @@ class Radix {
       if (this.settings.GRADIENT_ENABLED) {
         line.setAttribute('fill', 'none')
       } else {
-        line.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+        line.setAttribute('stroke', this.settings.COLOR_CIRCLES)
       }
       line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
       wrapper.appendChild(line)
@@ -438,7 +440,7 @@ class Radix {
     if (this.settings.GRADIENT_ENABLED) {
       circle.setAttribute('fill', 'none')
     } else {
-      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
     circle.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
@@ -456,9 +458,9 @@ class Radix {
     if (this.settings.GRADIENT_ENABLED) {
       circle.setAttribute('fill', 'none')
     } else {
-      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
-    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STRONG * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
 
     // outdoor circle
@@ -466,9 +468,9 @@ class Radix {
     if (this.settings.GRADIENT_ENABLED) {
       circle.setAttribute('fill', 'none')
     } else {
-      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
-    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STRONG * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
 
     // inner circle
@@ -476,9 +478,9 @@ class Radix {
     if (this.settings.GRADIENT_ENABLED) {
       circle.setAttribute('fill', 'none')
     } else {
-      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
-    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STRONG * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
   }
 

@@ -11,6 +11,9 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimize: true
+  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
@@ -20,7 +23,7 @@ module.exports = {
   },
   output: {
     // clean: true,
-    path: path.resolve(__dirname, 'dist'),
+    path: '/home/vachick/PhpstormProjects/MixPlacesAPI/api/lib/astro-chart',//path.resolve(__dirname, 'dist'),
     filename: 'astro-chart-browserless.js',
     library: {
       name: 'astro',

@@ -60,7 +60,7 @@ declare class SVG {
     setPointColor(node: Element): void;
     setSignColor(node: Element): void;
     setAxisColor(node: Element): void;
-    setCuspColor(node: Element): void;
+    setNumberColor(node: Element): void;
     sun(x: number, y: number): Element;
     sirius(x: number, y: number): Element;
     moon(x: number, y: number): Element;

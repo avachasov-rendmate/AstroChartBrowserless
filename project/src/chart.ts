@@ -100,7 +100,7 @@ class Chart {
       if (this.settings.GRADIENT_ENABLED) {
         line.setAttribute('fill', 'none')
       } else {
-        line.setAttribute('stroke', this.settings.LINE_COLOR)
+        line.setAttribute('stroke', this.settings.COLOR_LINES)
       }
       this.paper.root.appendChild(line)
 
@@ -108,7 +108,7 @@ class Chart {
       if (this.settings.GRADIENT_ENABLED) {
         circle.setAttribute('fill', 'none')
       } else {
-        circle.setAttribute('stroke', this.settings.LINE_COLOR)
+        circle.setAttribute('stroke', this.settings.COLOR_LINES)
       }
       circle.setAttribute('stroke-width', '1')
       this.paper.root.appendChild(circle)

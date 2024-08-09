@@ -63,16 +63,18 @@ class Transit {
    * Draw background
    */
   drawBg(): void {
-    const universe = this.universe
+    if (!this.settings.GRADIENT_ENABLED) {
+      const universe = this.universe
 
-    const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_BG, this.paper._paperElementId)
+      const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_BG, this.paper._paperElementId)
 
-    const LARGE_ARC_FLAG = 1
-    const start = 0 // degree
-    const end = 359.99 // degree
-    const hemisphere = this.paper.segment(this.cx, this.cy, this.radius + this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO, start, end, this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO, LARGE_ARC_FLAG)
-    hemisphere.setAttribute('fill', this.settings.STROKE_ONLY ? 'none' : this.settings.COLOR_BACKGROUND)
-    wrapper.appendChild(hemisphere)
+      const LARGE_ARC_FLAG = 1
+      const start = 0 // degree
+      const end = 359.99 // degree
+      const hemisphere = this.paper.segment(this.cx, this.cy, this.radius + this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO, start, end, this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO, LARGE_ARC_FLAG)
+      hemisphere.setAttribute('fill', this.settings.STROKE_ONLY ? 'none' : this.settings.COLOR_BACKGROUND)
+      wrapper.appendChild(hemisphere)
+    }
   }
 
   /**
@@ -81,61 +83,60 @@ class Transit {
    * @param{undefined | Object} planetsData, posible data planets to draw
    */
   drawPoints(planetsData?: Points): void {
-    const planets = (planetsData == null) ? this.data.planets : planetsData
-    if (planets == null) {
-      return
-    }
-
-    const universe = this.universe
-    const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_POINTS, this.paper._paperElementId)
-
-    const gap = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO)
-    const step = (gap - 2 * (this.settings.PADDING * this.settings.SYMBOL_SCALE)) / Object.keys(planets).length
-
-    const pointerRadius = this.radius + (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO)
-    let startPosition
-    let endPosition
-
-    this.locatedPoints = []
-    for (const planet in planets) {
-      if (planets.hasOwnProperty(planet)) {
-        const position = getPointPosition(this.cx, this.cy, this.pointRadius, planets[planet][0] + this.shift, this.settings)
-        const point = { name: planet, x: position.x, y: position.y, r: (this.settings.COLLISION_RADIUS * this.settings.SYMBOL_SCALE), angle: planets[planet][0] + this.shift, pointer: planets[planet][0] + this.shift }
-        this.locatedPoints = assemble(this.locatedPoints, point, { cx: this.cx, cy: this.cy, r: this.pointRadius }, this.settings)
+    if (this.settings.OUTER_SYMBOLS) {
+      const planets = (planetsData == null) ? this.data.planets : planetsData
+      if (planets == null) {
+        return
       }
-    }
 
-    if (this.settings.DEBUG) console.log('Transit count of points: ' + this.locatedPoints.length)
-    if (this.settings.DEBUG) console.log('Transit located points:\n' + JSON.stringify(this.locatedPoints))
+      const universe = this.universe
+      const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_POINTS, this.paper._paperElementId)
 
-    this.locatedPoints.forEach(function (point) {
-      // draw pointer
-      startPosition = getPointPosition(this.cx, this.cy, pointerRadius, planets[point.name][0] + this.shift, this.settings)
-      endPosition = getPointPosition(this.cx, this.cy, pointerRadius + this.rulerRadius / 2, planets[point.name][0] + this.shift, this.settings)
-      const pointer = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
-      if (this.settings.GRADIENT_ENABLED) {
-        pointer.setAttribute('fill', 'none')
-      } else {
-        pointer.setAttribute('stroke', this.settings.CIRCLE_COLOR)
-      }
-      pointer.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
-      wrapper.appendChild(pointer)
+      const gap = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO)
+      const step = (gap - 2 * (this.settings.PADDING * this.settings.SYMBOL_SCALE)) / Object.keys(planets).length
 
-      // draw pointer line
-      if (!this.settings.STROKE_ONLY && (planets[point.name][0] + this.shift) !== point.angle) {
-        startPosition = endPosition
-        endPosition = getPointPosition(this.cx, this.cy, this.pointRadius - (this.settings.COLLISION_RADIUS * this.settings.SYMBOL_SCALE), point.angle, this.settings)
-        const line = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
-        if (this.settings.GRADIENT_ENABLED) {
-          line.setAttribute('fill', 'none')
-        } else {
-          line.setAttribute('stroke', this.settings.LINE_COLOR)
+      const pointerRadius = this.radius + (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO)
+      let startPosition
+      let endPosition
+
+      this.locatedPoints = []
+      for (const planet in planets) {
+        if (planets.hasOwnProperty(planet)) {
+          const position = getPointPosition(this.cx, this.cy, this.pointRadius, planets[planet][0] + this.shift, this.settings)
+          const point = { name: planet, x: position.x, y: position.y, r: (this.settings.COLLISION_RADIUS * this.settings.SYMBOL_SCALE), angle: planets[planet][0] + this.shift, pointer: planets[planet][0] + this.shift }
+          this.locatedPoints = assemble(this.locatedPoints, point, { cx: this.cx, cy: this.cy, r: this.pointRadius }, this.settings)
         }
-        line.setAttribute('stroke-width', 0.5 * (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
-        wrapper.appendChild(line)
       }
 
-      if (this.settings.SHOW_DIGNITIES_TEXT) {
+      if (this.settings.DEBUG) console.log('Transit count of points: ' + this.locatedPoints.length)
+      if (this.settings.DEBUG) console.log('Transit located points:\n' + JSON.stringify(this.locatedPoints))
+      this.locatedPoints.forEach(function (point) {
+        // draw pointer
+        startPosition = getPointPosition(this.cx, this.cy, pointerRadius, planets[point.name][0] + this.shift, this.settings)
+        endPosition = getPointPosition(this.cx, this.cy, pointerRadius + this.rulerRadius / 2, planets[point.name][0] + this.shift, this.settings)
+        const pointer = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
+        if (this.settings.GRADIENT_ENABLED) {
+          pointer.setAttribute('fill', 'none')
+        } else {
+          pointer.setAttribute('stroke', this.settings.COLOR_CIRCLES)
+        }
+        pointer.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
+        wrapper.appendChild(pointer)
+
+        // draw pointer line
+        if (!this.settings.STROKE_ONLY && (planets[point.name][0] + this.shift) !== point.angle) {
+          startPosition = endPosition
+          endPosition = getPointPosition(this.cx, this.cy, this.pointRadius - (this.settings.COLLISION_RADIUS * this.settings.SYMBOL_SCALE), point.angle, this.settings)
+          const line = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
+          if (this.settings.GRADIENT_ENABLED) {
+            line.setAttribute('fill', 'none')
+          } else {
+            line.setAttribute('stroke', this.settings.COLOR_LINES)
+          }
+          line.setAttribute('stroke-width', 0.5 * (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
+          wrapper.appendChild(line)
+        }
+
         // draw symbol
         const symbol = this.paper.getSymbol(point.name, point.x, point.y)
         symbol.setAttribute('id', this.paper.root.id + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_POINTS + '-' + point.name)
@@ -154,10 +155,10 @@ class Transit {
 
         const pointDescriptions = getDescriptionPosition(point, textsToShow, this.settings)
         pointDescriptions.forEach(function (dsc) {
-          wrapper.appendChild(this.paper.text(dsc.text, dsc.x, dsc.y, this.settings.POINTS_TEXT_SIZE, this.settings.SIGNS_COLOR))
+          wrapper.appendChild(this.paper.text(dsc.text, dsc.x, dsc.y, this.settings.POINTS_TEXT_SIZE, this.settings.COLOR_NUMBERS))
         }, this)
-      }
-    }, this)
+      }, this)
+    }
   }
 
   /**
@@ -172,9 +173,9 @@ class Transit {
     if(this.settings.GRADIENT_ENABLED) {
       circle.setAttribute('fill', 'none')
     } else {
-      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
-    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STRONG * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
   }
 
@@ -208,7 +209,7 @@ class Transit {
       if (this.settings.GRADIENT_ENABLED) {
         line.setAttribute('fill', 'none')
       } else {
-        line.setAttribute('stroke', this.settings.LINE_COLOR)
+        line.setAttribute('stroke', this.settings.COLOR_LINES)
       }
       line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
 
@@ -236,7 +237,7 @@ class Transit {
       if (this.settings.GRADIENT_ENABLED) {
         line.setAttribute('fill', 'none')
       } else {
-        line.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+        line.setAttribute('stroke', this.settings.COLOR_CIRCLES)
       }
       line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
       wrapper.appendChild(line)
@@ -246,7 +247,7 @@ class Transit {
     if (this.settings.GRADIENT_ENABLED) {
       circle.setAttribute('fill', 'none')
     } else {
-      circle.setAttribute('stroke', this.settings.CIRCLE_COLOR)
+      circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
     circle.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
@@ -272,7 +273,7 @@ class Transit {
       if (this.settings.GRADIENT_ENABLED) {
         line.setAttribute('fill', 'none')
       } else {
-        line.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.LINE_COLOR : aspectsList[i].aspect.color)
+        line.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.COLOR_LINES : aspectsList[i].aspect.color)
       }
       line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
 
