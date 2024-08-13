@@ -16,14 +16,14 @@ export interface Gradient {
 }
 
 export interface Settings {
-  GRADIENT_ENABLED: boolean
+  showAxis: boolean
+  showGradient: boolean
   GRADIENT: Gradient
   SYMBOL_SCALE: number
   COLOR_BACKGROUND: string
   COLOR_POINTS: string
   POINTS_TEXT_SIZE: number
   POINTS_STROKE: number
-  COLOR_SIGNS: string
   SIGNS_STROKE: number
   MARGIN: number
   PADDING: number
@@ -39,7 +39,6 @@ export interface Settings {
   ID_RULER: string
   ID_BG: string
   COLOR_CIRCLES: string
-  CIRCLE_STROKE: number
   COLOR_LINES: string
   INDOOR_CIRCLE_RADIUS_RATIO: number
   INNER_CIRCLE_RADIUS_RATIO: number
@@ -93,6 +92,8 @@ export interface Settings {
   SYMBOL_PISCES: string
   SYMBOL_SIRIUS: string
   SYMBOL_SIGNS: string[]
+  COLOR_SIGN_LIGHT: string
+  COLOR_SIGN_DARK: string
   COLOR_SIGN_BG_LIGHT: string
   COLOR_SIGN_BG_DARK: string
   CUSTOM_SYMBOL_FN: null | ((name: string, x: number, y: number, context: SVG) => Element)
@@ -110,12 +111,48 @@ export interface Settings {
   DIGNITIES_EXACT_EXALTATION_DEFAULT: Dignity[]
   DEBUG: boolean
   NUMBER_STROKE: number
+  RULER_CIRCLE_STROKE: number
+  RULER_RAY_STROKE: number
+  CIRCLE_STROKE_CENTRAL: number
+  CIRCLE_STROKE_OUTER: number
+  CIRCLE_STROKE_SIGNS_DISK_OUTER: number
+  CIRCLE_STROKE_SIGNS_DISK_INNER: number
+  showCentralOuterCircle: boolean
+  CIRCLE_OUTER_SHIFT: number
+  showOuterCircle: boolean
+  showPointsPointer: boolean
+  showRulerRays: boolean
+  CUSPS_DASHARRAY: string
+  ASPECTS_CIRCLE_RADIUS_RATIO: number
+  CIRCLE_DASHARRAY_CENTRAL: string
+  CIRCLE_DASHARRAY_OUTER: string
+  CIRCLE_DASHARRAY_SIGNS_DISK_OUTER: string
+  CIRCLE_DASHARRAY_SIGNS_DISK_INNER: string
+  showPointDescription: boolean
 }
 
 const settings: Settings = {
+  showPointDescription: false,
+  CUSPS_DASHARRAY: '5,5',
+  showRulerRays: true,
+  showOuterCircle: true,
+  showPointsPointer: false,
+  showCentralOuterCircle: false,
+  CIRCLE_OUTER_SHIFT: 10,
+  CIRCLE_STROKE_SIGNS_DISK_INNER: 1,
+  CIRCLE_STROKE_SIGNS_DISK_OUTER: 1,
+  CIRCLE_STROKE_CENTRAL: 1,
+  CIRCLE_STROKE_OUTER: 1,
+  CIRCLE_DASHARRAY_CENTRAL: '0',
+  CIRCLE_DASHARRAY_OUTER: '0',
+  CIRCLE_DASHARRAY_SIGNS_DISK_OUTER: '0',
+  CIRCLE_DASHARRAY_SIGNS_DISK_INNER: '0',
+  RULER_CIRCLE_STROKE: 1,
+  RULER_RAY_STROKE: 1,
+  showAxis: true,
   NUMBER_STROKE: 1.5,
   // Enable / Disable gradient
-  GRADIENT_ENABLED: false,
+  showGradient: false,
   GRADIENT: {
     start: '#fff',
     stop: '#f0f0f0',
@@ -137,9 +174,6 @@ const settings: Settings = {
 
   // Points strength of lines
   POINTS_STROKE: 1.8,
-
-  // Font color of signs symbols
-  COLOR_SIGNS: '#000',
 
   // Signs strength of lines
   SIGNS_STROKE: 1.5,
@@ -185,15 +219,12 @@ const settings: Settings = {
 
   // Color of circles in charts
   COLOR_CIRCLES: '#333',
-
-  // Circles strength of lines
-  CIRCLE_STROKE: 2,
-
   // Color of lines in charts
   COLOR_LINES: '#333',
 
   // radius / INDOOR_CIRCLE_RADIUS_RATIO
   INDOOR_CIRCLE_RADIUS_RATIO: 2,
+  ASPECTS_CIRCLE_RADIUS_RATIO: 2,
 
   // radius - radius/INNER_CIRCLE_RADIUS_RATIO
   INNER_CIRCLE_RADIUS_RATIO: 8,
@@ -244,6 +275,8 @@ const settings: Settings = {
   // Cusps strength of lines
   CUSPS_STROKE: 1,
   COLOR_NUMBERS: '#000',
+  COLOR_SIGN_LIGHT: '#f0f0f0',
+  COLOR_SIGN_DARK: '#838080',
   COLOR_SIGN_BG_LIGHT: '#f0f0f0',
   COLOR_SIGN_BG_DARK: '#838080',
 

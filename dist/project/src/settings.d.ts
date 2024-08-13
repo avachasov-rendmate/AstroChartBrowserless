@@ -17,14 +17,14 @@ export interface Gradient {
     rotation?: number;
 }
 export interface Settings {
-    GRADIENT_ENABLED: boolean;
+    showAxis: boolean;
+    showGradient: boolean;
     GRADIENT: Gradient;
     SYMBOL_SCALE: number;
     COLOR_BACKGROUND: string;
     COLOR_POINTS: string;
     POINTS_TEXT_SIZE: number;
     POINTS_STROKE: number;
-    COLOR_SIGNS: string;
     SIGNS_STROKE: number;
     MARGIN: number;
     PADDING: number;
@@ -40,7 +40,6 @@ export interface Settings {
     ID_RULER: string;
     ID_BG: string;
     COLOR_CIRCLES: string;
-    CIRCLE_STROKE: number;
     COLOR_LINES: string;
     INDOOR_CIRCLE_RADIUS_RATIO: number;
     INNER_CIRCLE_RADIUS_RATIO: number;
@@ -94,6 +93,8 @@ export interface Settings {
     SYMBOL_PISCES: string;
     SYMBOL_SIRIUS: string;
     SYMBOL_SIGNS: string[];
+    COLOR_SIGN_LIGHT: string;
+    COLOR_SIGN_DARK: string;
     COLOR_SIGN_BG_LIGHT: string;
     COLOR_SIGN_BG_DARK: string;
     CUSTOM_SYMBOL_FN: null | ((name: string, x: number, y: number, context: SVG) => Element);
@@ -111,6 +112,24 @@ export interface Settings {
     DIGNITIES_EXACT_EXALTATION_DEFAULT: Dignity[];
     DEBUG: boolean;
     NUMBER_STROKE: number;
+    RULER_CIRCLE_STROKE: number;
+    RULER_RAY_STROKE: number;
+    CIRCLE_STROKE_CENTRAL: number;
+    CIRCLE_STROKE_OUTER: number;
+    CIRCLE_STROKE_SIGNS_DISK_OUTER: number;
+    CIRCLE_STROKE_SIGNS_DISK_INNER: number;
+    showCentralOuterCircle: boolean;
+    CIRCLE_OUTER_SHIFT: number;
+    showOuterCircle: boolean;
+    showPointsPointer: boolean;
+    showRulerRays: boolean;
+    CUSPS_DASHARRAY: string;
+    ASPECTS_CIRCLE_RADIUS_RATIO: number;
+    CIRCLE_DASHARRAY_CENTRAL: string;
+    CIRCLE_DASHARRAY_OUTER: string;
+    CIRCLE_DASHARRAY_SIGNS_DISK_OUTER: string;
+    CIRCLE_DASHARRAY_SIGNS_DISK_INNER: string;
+    showPointDescription: boolean;
 }
 declare const default_settings: Settings;
 export default default_settings;

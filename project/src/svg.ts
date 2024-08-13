@@ -38,7 +38,7 @@ class SVG {
     const wrapper = this.document.createElementNS(svg.namespaceURI, 'g')
     wrapper.setAttribute('id', this._paperElementId)
 
-    if (this.settings.GRADIENT_ENABLED) {
+    if (this.settings.showGradient) {
       const
         defs = this.document.createElementNS(svg.namespaceURI, 'defs'),
         gradientDefId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
@@ -81,7 +81,7 @@ class SVG {
     this.context = this
   }
 
-  _getSymbol(name: string, x: number, y: number): Element {
+  _getSymbol(name: string, x: number, y: number, color?: string): Element {
     switch (name) {
       case this.settings.SYMBOL_SUN:
         return this.sun(x, y)
@@ -116,29 +116,29 @@ class SVG {
       case this.settings.SYMBOL_FORTUNE:
         return this.fortune(x, y)
       case this.settings.SYMBOL_ARIES:
-        return this.aries(x, y)
+        return this.aries(x, y, color as string)
       case this.settings.SYMBOL_TAURUS:
-        return this.taurus(x, y)
+        return this.taurus(x, y, color as string)
       case this.settings.SYMBOL_GEMINI:
-        return this.gemini(x, y)
+        return this.gemini(x, y, color as string)
       case this.settings.SYMBOL_CANCER:
-        return this.cancer(x, y)
+        return this.cancer(x, y, color as string)
       case this.settings.SYMBOL_LEO:
-        return this.leo(x, y)
+        return this.leo(x, y, color as string)
       case this.settings.SYMBOL_VIRGO:
-        return this.virgo(x, y)
+        return this.virgo(x, y, color as string)
       case this.settings.SYMBOL_LIBRA:
-        return this.libra(x, y)
+        return this.libra(x, y, color as string)
       case this.settings.SYMBOL_SCORPIO:
-        return this.scorpio(x, y)
+        return this.scorpio(x, y, color as string)
       case this.settings.SYMBOL_SAGITTARIUS:
-        return this.sagittarius(x, y)
+        return this.sagittarius(x, y, color as string)
       case this.settings.SYMBOL_CAPRICORN:
-        return this.capricorn(x, y)
+        return this.capricorn(x, y, color as string)
       case this.settings.SYMBOL_AQUARIUS:
-        return this.aquarius(x, y)
+        return this.aquarius(x, y, color as string)
       case this.settings.SYMBOL_PISCES:
-        return this.pisces(x, y)
+        return this.pisces(x, y, color as string)
       case this.settings.SYMBOL_AS:
         return this.ascendant(x, y)
       case this.settings.SYMBOL_DS:
@@ -190,11 +190,11 @@ class SVG {
    *
    * @return {SVGElement g}
    */
-  getSymbol(name: string, x: number, y: number): Element {
-    if (this.settings.CUSTOM_SYMBOL_FN == null) return this._getSymbol(name, x, y)
+  getSymbol(name: string, x: number, y: number, color?: string): Element {
+    if (this.settings.CUSTOM_SYMBOL_FN == null) return this._getSymbol(name, x, y, color)
 
     const symbol = this.settings.CUSTOM_SYMBOL_FN(name, x, y, this.context)
-    if (symbol == null || symbol === undefined) return this._getSymbol(name, x, y)
+    if (symbol == null || symbol === undefined) return this._getSymbol(name, x, y, color)
 
     return symbol
   }
@@ -241,28 +241,28 @@ class SVG {
     return this._paperElementId + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_CUSPS + '-' + house
   }
   setPointColor(node: Element): void {
-    if (!this.settings.GRADIENT_ENABLED) {
+    if (!this.settings.showGradient) {
       node.setAttribute('stroke', this.settings.COLOR_POINTS)
     }
     node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
     node.setAttribute('fill', 'none')
   }
-  setSignColor(node: Element): void {
-    if (!this.settings.GRADIENT_ENABLED) {
-      node.setAttribute('stroke', this.settings.COLOR_SIGNS)
+  setSignColor(node: Element, color: string ): void {
+    if (!this.settings.showGradient) {
+      node.setAttribute('stroke', color)
     }
     node.setAttribute('stroke-width', this.settings.SIGNS_STROKE.toString())
     node.setAttribute('fill', 'none')
   }
   setAxisColor(node: Element): void {
-    if (!this.settings.GRADIENT_ENABLED) {
+    if (!this.settings.showGradient) {
       node.setAttribute('stroke', this.settings.COLOR_AXIS_FONT)
     }
     node.setAttribute('stroke-width', (this.settings.SYMBOL_AXIS_STROKE * this.settings.SYMBOL_SCALE).toString())
     node.setAttribute('fill', 'none')
   }
   setNumberColor(node: Element): void {
-    if (!this.settings.GRADIENT_ENABLED) {
+    if (!this.settings.showGradient) {
       node.setAttribute('stroke', this.settings.COLOR_NUMBERS)
     }
     node.setAttribute('stroke-width', (this.settings.NUMBER_STROKE * this.settings.SYMBOL_SCALE).toString())
@@ -744,7 +744,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  aries(x: number, y: number): Element {
+  aries(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -760,7 +760,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}m7.5,-0.9c0,0,1.2,-1.2,1.2,-2.8s-0.8,-3,-3,-3s-5.7,2.7,-5.7,13.4c0,-10.7,-3.5,-13.4,-5.7,-13.4s-3,1.4,-3,3s1.2,2.8,1.2,2.8`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
 
     wrapper.appendChild(node)
 
@@ -778,7 +778,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  taurus(x: number, y: number): Element {
+  taurus(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -794,7 +794,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}c-2.6,0,-4.7,2.1,-4.7,4.7s2.1,4.7,4.7,4.7s4.7,-2.1,4.7,-4.7s-2.1,-4.7,-4.7,-4.7zm-6.8,-4.6c0,0,1.5,0,2.1,0.9s2.3,3.8,3.7,3.8m2,0c1.4,0,3.1,-2.8,3.7,-3.8s2.1,-0.9,2.1,-0.9`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
@@ -810,7 +810,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  gemini(x: number, y: number): Element {
+  gemini(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -826,7 +826,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}m5.9,6.8c-1,-1.6,-3.3,-2.8,-5.9,-2.8c-2.6,0,-4.9,1.2,-5.9,2.8m0,-13.6c1,1.6,3.3,2.8,5.9,2.8c2.6,0,4.9,-1.2,5.9,-2.8m-3,2.3v9m-5.8,-9v9`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
@@ -842,7 +842,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  cancer(x: number, y: number): Element {
+  cancer(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = -4 // px
     const yShift = 2 // px
@@ -858,7 +858,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}c1.3,2.1,4,3.5,7.1,3.5c2.8,0,5.2,-1.2,6.7,-2.9m-2.2,-4.6c-1.5,0,-2.8,1.2,-2.8,2.8s1.2,2.8,2.8,2.8s2.8,-1.2,2.8,-2.8s-1.2,-2.8,-2.8,-2.8zm2.8,-1.6c-1.3,-2.1,-4,-3.5,-7.1,-3.5c-2.8,0,-5.2,1.2,-6.7,2.9m2.2,4.6c1.5,0,2.8,-1.2,2.8,-2.8s-1.2,-2.8,-2.8,-2.8s-2.8,1.2,-2.8,2.8s1.2,2.8,2.8,2.8z`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 18, y))
@@ -874,7 +874,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  leo(x: number, y: number): Element {
+  leo(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -890,7 +890,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}m-2.7,5.3c1.5,0,2.8,-1.2,2.8,-2.8s-1.2,-2.8,-2.8,-2.8s-2.8,1.3,-2.8,2.8s1.3,2.8,2.8,2.8zm8.2,0.9c0,0,-0.4,2.1,-2.4,2.1s-2.2,-2.1,-2.2,-2.8c0,-2.9,2.8,-7.9,2.8,-9.9s-0.7,-4,-3.4,-4s-3,1.9,-3,3.3s2.6,6.4,2.6,6.4`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 6, y - 13))
@@ -906,7 +906,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  virgo(x: number, y: number): Element {
+  virgo(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -922,7 +922,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}m9.2,6.5c0,0,-1.5,-0.4,-2.7,-1.8s-1,-5.8,-0.9,-8.5s-1.8,-2.7,-1.8,-2.7c-3.7,0,-4,10.1,-4,10.1h0c0,0,2.2,-10.1,-1.5,-10.1s-4,10.1,-4,10.1h0c0,0,2.2,-10.1,-1.5,-10.1c-0.8,0,-1.5,0.5,-2,1.4m10.8,11.2c6.4,0,6.8,-6.6,6.8,-6.6s0.3,-2.1,-1.1,-2.2c-1.3,-0.2,-1.8,1.4,-1.8,1.4`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
@@ -938,7 +938,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  libra(x: number, y: number): Element {
+  libra(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -954,7 +954,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}m-8.2,4.6h16.4m0,-2.7h-5.8l0,0c0.8,-0.7,1.3,-1.7,1.3,-2.8c0,-2.1,-1.7,-3.7,-3.7,-3.7s-3.7,1.6,-3.7,3.7c0,1.1,0.5,2.1,1.3,2.8l0,0h-5.8`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 6, y))
@@ -970,7 +970,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  scorpio(x: number, y: number): Element {
+  scorpio(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -987,7 +987,7 @@ class SVG {
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
 
-    this.setSignColor(node)
+    this.setSignColor(node, color)
 
     wrapper.appendChild(node)
 
@@ -1004,7 +1004,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  sagittarius(x: number, y: number): Element {
+  sagittarius(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -1020,7 +1020,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}m-6.4,6.4l12.8,-12.8m0,6.3v-6.3h-6.3m1.6,11l-6.3,-6.3`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 12, y))
@@ -1036,7 +1036,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  capricorn(x: number, y: number): Element {
+  capricorn(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 9 // px
@@ -1052,7 +1052,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}c5.4,0,6.3,-4.4,6.3,-4.4s0.7,-2.9,3,-2.9c0.9,0,1.4,0.6,1.7,1.1c0.3,0.6,0.3,1.4,0,2c-0.3,0.5,-0.8,1,-1.7,1c-3.5,0,-3.2,-5.1,-3.2,-5.1c0.1,-2.6,-0.2,-5.4,-2.1,-5.4c-3.7,0,-4,10.1,-4,10.1h0c0,0,2.2,-10.1,-1.5,-10.1c-0.8,0,-1.5,0.5,-2,1.4`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
@@ -1068,7 +1068,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  aquarius(x: number, y: number): Element {
+  aquarius(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -1084,7 +1084,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}m-9.5,0.2l3.8,-3.8l3.8,3.8l3.8,-3.8l3.8,3.8l3.8,-3.8m-19,7.2l3.8,-3.8l3.8,3.8l3.8,-3.8l3.8,3.8l3.8,-3.8`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
@@ -1100,7 +1100,7 @@ class SVG {
  *
  * @return {SVGPathElement} path
  */
-  pisces(x: number, y: number): Element {
+  pisces(x: number, y: number, color: string): Element {
     // center symbol
     const xShift = 0 // px
     const yShift = 0 // px
@@ -1116,7 +1116,7 @@ class SVG {
     node.setAttribute('d', `M${x},${y}m5.6,-6.9c-2.1,1.3,-3.5,4,-3.5,7.1c0,2.8,1.1,5.3,2.9,6.7m-10,0c1.8,-1.4,2.9,-3.9,2.9,-6.7c0,-3.1,-1.4,-5.8,-3.5,-7.1m0,6.9h10.9`)
     node.setAttribute('stroke-linecap', 'round')
     node.setAttribute('stroke-linejoin', 'round')
-    this.setSignColor(node)
+    this.setSignColor(node, color)
     wrapper.appendChild(node)
 
     if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
@@ -1551,7 +1551,7 @@ class SVG {
     text.setAttribute('x', x.toString())
     text.setAttribute('y', y.toString())
     text.setAttribute('font-size', size)
-    this.settings.GRADIENT_ENABLED ? text.setAttribute('fill', 'none') : text.setAttribute('fill', color)
+    this.settings.showGradient ? text.setAttribute('fill', 'none') : text.setAttribute('fill', color)
     text.setAttribute('font-family', 'serif')
     text.setAttribute('dominant-baseline', 'central')
     text.appendChild(this.document.createTextNode(txt))

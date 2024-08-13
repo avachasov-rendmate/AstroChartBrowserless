@@ -65,9 +65,8 @@ class Chart {
     radix.drawRuler()
     radix.drawPoints()
     radix.drawCusps()
-    radix.drawAxis()
+    if (this.settings.showAxis) radix.drawAxis()
     radix.drawCircles()
-
     return radix
   }
 
@@ -97,7 +96,7 @@ class Chart {
       positions = getPointPosition(this.cx, this.cy, this.radius * 2, planet * 30, this.settings)
 
       line = this.paper.line(this.cx, this.cy, positions.x, positions.y)
-      if (this.settings.GRADIENT_ENABLED) {
+      if (this.settings.showGradient) {
         line.setAttribute('fill', 'none')
       } else {
         line.setAttribute('stroke', this.settings.COLOR_LINES)
@@ -105,7 +104,7 @@ class Chart {
       this.paper.root.appendChild(line)
 
       circle = this.paper.circle(this.cx, this.cy, startRadius + startRadius * planet)
-      if (this.settings.GRADIENT_ENABLED) {
+      if (this.settings.showGradient) {
         circle.setAttribute('fill', 'none')
       } else {
         circle.setAttribute('stroke', this.settings.COLOR_LINES)

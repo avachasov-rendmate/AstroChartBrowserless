@@ -19,7 +19,7 @@ declare class SVG {
     height: number;
     context: this;
     constructor(document: any, elementId: string, width: number, height: number, settings: Settings);
-    _getSymbol(name: string, x: number, y: number): Element;
+    _getSymbol(name: string, x: number, y: number, color?: string): Element;
     /**
      * Get a required symbol.
      *
@@ -29,7 +29,7 @@ declare class SVG {
      *
      * @return {SVGElement g}
      */
-    getSymbol(name: string, x: number, y: number): Element;
+    getSymbol(name: string, x: number, y: number, color?: string): Element;
     /**
      * Create transparent rectangle.
      *
@@ -58,7 +58,7 @@ declare class SVG {
      */
     getHouseIdWrapper(house: string): string;
     setPointColor(node: Element): void;
-    setSignColor(node: Element): void;
+    setSignColor(node: Element, color: string): void;
     setAxisColor(node: Element): void;
     setNumberColor(node: Element): void;
     sun(x: number, y: number): Element;
@@ -77,18 +77,18 @@ declare class SVG {
     nnode(x: number, y: number): Element;
     snode(x: number, y: number): Element;
     fortune(x: number, y: number): Element;
-    aries(x: number, y: number): Element;
-    taurus(x: number, y: number): Element;
-    gemini(x: number, y: number): Element;
-    cancer(x: number, y: number): Element;
-    leo(x: number, y: number): Element;
-    virgo(x: number, y: number): Element;
-    libra(x: number, y: number): Element;
-    scorpio(x: number, y: number): Element;
-    sagittarius(x: number, y: number): Element;
-    capricorn(x: number, y: number): Element;
-    aquarius(x: number, y: number): Element;
-    pisces(x: number, y: number): Element;
+    aries(x: number, y: number, color: string): Element;
+    taurus(x: number, y: number, color: string): Element;
+    gemini(x: number, y: number, color: string): Element;
+    cancer(x: number, y: number, color: string): Element;
+    leo(x: number, y: number, color: string): Element;
+    virgo(x: number, y: number, color: string): Element;
+    libra(x: number, y: number, color: string): Element;
+    scorpio(x: number, y: number, color: string): Element;
+    sagittarius(x: number, y: number, color: string): Element;
+    capricorn(x: number, y: number, color: string): Element;
+    aquarius(x: number, y: number, color: string): Element;
+    pisces(x: number, y: number, color: string): Element;
     /**
    * Draw As symbol
    */

@@ -63,7 +63,7 @@ class Transit {
    * Draw background
    */
   drawBg(): void {
-    if (!this.settings.GRADIENT_ENABLED) {
+    if (!this.settings.showGradient) {
       const universe = this.universe
 
       const wrapper = getEmptyWrapper(this.document, universe, this.paper._paperElementId + '-' + this.settings.ID_BG, this.paper._paperElementId)
@@ -115,7 +115,7 @@ class Transit {
         startPosition = getPointPosition(this.cx, this.cy, pointerRadius, planets[point.name][0] + this.shift, this.settings)
         endPosition = getPointPosition(this.cx, this.cy, pointerRadius + this.rulerRadius / 2, planets[point.name][0] + this.shift, this.settings)
         const pointer = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
-        if (this.settings.GRADIENT_ENABLED) {
+        if (this.settings.showGradient) {
           pointer.setAttribute('fill', 'none')
         } else {
           pointer.setAttribute('stroke', this.settings.COLOR_CIRCLES)
@@ -128,7 +128,7 @@ class Transit {
           startPosition = endPosition
           endPosition = getPointPosition(this.cx, this.cy, this.pointRadius - (this.settings.COLLISION_RADIUS * this.settings.SYMBOL_SCALE), point.angle, this.settings)
           const line = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
-          if (this.settings.GRADIENT_ENABLED) {
+          if (this.settings.showGradient) {
             line.setAttribute('fill', 'none')
           } else {
             line.setAttribute('stroke', this.settings.COLOR_LINES)
@@ -170,12 +170,12 @@ class Transit {
     const radius = this.radius + this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO
 
     const circle = this.paper.circle(this.cx, this.cy, radius)
-    if(this.settings.GRADIENT_ENABLED) {
+    if(this.settings.showGradient) {
       circle.setAttribute('fill', 'none')
     } else {
       circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
-    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_OUTER * this.settings.SYMBOL_SCALE).toString())
     wrapper.appendChild(circle)
   }
 
@@ -206,7 +206,7 @@ class Transit {
       const startPosition = bottomPosition = getPointPosition(this.cx, this.cy, this.radius, cusps[i] + this.shift, this.settings)
       const endPosition = getPointPosition(this.cx, this.cy, this.radius + this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO - this.rulerRadius, cusps[i] + this.shift, this.settings)
       const line = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
-      if (this.settings.GRADIENT_ENABLED) {
+      if (this.settings.showGradient) {
         line.setAttribute('fill', 'none')
       } else {
         line.setAttribute('stroke', this.settings.COLOR_LINES)
@@ -234,7 +234,7 @@ class Transit {
 
     rays.forEach(function (ray) {
       const line = this.paper.line(ray.startX, ray.startY, ray.endX, ray.endY)
-      if (this.settings.GRADIENT_ENABLED) {
+      if (this.settings.showGradient) {
         line.setAttribute('fill', 'none')
       } else {
         line.setAttribute('stroke', this.settings.COLOR_CIRCLES)
@@ -244,7 +244,7 @@ class Transit {
     }, this)
 
     const circle = this.paper.circle(this.cx, this.cy, startRadius - this.rulerRadius)
-    if (this.settings.GRADIENT_ENABLED) {
+    if (this.settings.showGradient) {
       circle.setAttribute('fill', 'none')
     } else {
       circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
@@ -270,7 +270,7 @@ class Transit {
       const endPoint = getPointPosition(this.cx, this.cy, this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO, aspectsList[i].point.position + this.shift, this.settings)
 
       const line = this.paper.line(startPoint.x, startPoint.y, endPoint.x, endPoint.y)
-      if (this.settings.GRADIENT_ENABLED) {
+      if (this.settings.showGradient) {
         line.setAttribute('fill', 'none')
       } else {
         line.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.COLOR_LINES : aspectsList[i].aspect.color)
