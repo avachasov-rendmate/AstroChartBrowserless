@@ -140,7 +140,7 @@ class Radix {
       if (!this.settings.showGradient) {
         segment.setAttribute('stroke', strokeMode ? this.settings.COLOR_CIRCLES : 'none')
       }
-      segment.setAttribute('stroke-width', strokeMode ? '1' : '0')
+      segment.setAttribute('stroke-width', strokeMode ? this.settings.SIGN_BG_STROKE.toString() : '0')
       wrapper.appendChild(segment)
 
       start += step
@@ -292,14 +292,14 @@ class Radix {
       // Ic
       if (i === IC) {
         // Text
-        textPosition = getPointPosition(this.cx - 25, this.cy - 5, axisRadius + (10 * this.settings.SYMBOL_SCALE), this.data.cusps[i] - 2 + this.shift, this.settings)
+        textPosition = getPointPosition(this.cx, this.cy, axisRadius + (10 * this.settings.SYMBOL_SCALE), this.data.cusps[i] - 2 + this.shift, this.settings)
         wrapper.appendChild(this.paper.getSymbol(this.settings.SYMBOL_IC, textPosition.x, textPosition.y))
       }
 
       // Mc
       if (i === MC) {
         // Text
-        textPosition = getPointPosition(this.cx - 25 , this.cy + 5, axisRadius + (10 * this.settings.SYMBOL_SCALE), this.data.cusps[i] + 2 + this.shift, this.settings)
+        textPosition = getPointPosition(this.cx , this.cy , axisRadius + (10 * this.settings.SYMBOL_SCALE), this.data.cusps[i] + 2 + this.shift, this.settings)
         wrapper.appendChild(this.paper.getSymbol(this.settings.SYMBOL_MC, textPosition.x, textPosition.y))
       }
     }, this)
@@ -391,6 +391,22 @@ class Radix {
         const startPoint = getPointPosition(this.cx, this.cy, this.radius / this.settings.ASPECTS_CIRCLE_RADIUS_RATIO, aspectsList[i].toPoint.position + this.shift, this.settings)
         const endPoint = getPointPosition(this.cx, this.cy, this.radius / this.settings.ASPECTS_CIRCLE_RADIUS_RATIO, aspectsList[i].point.position + this.shift, this.settings)
 
+        if (this.settings.showAspectPoints) {
+          const
+            circleStart = this.paper.circle(startPoint.x, startPoint.y, this.settings.CUSPS_STROKE * 2),
+            circleEnd = this.paper.circle(endPoint.x, endPoint.y, this.settings.CUSPS_STROKE * 2)
+          if (this.settings.showGradient) {
+            circleStart.setAttribute('fill', 'none')
+            circleEnd.setAttribute('fill', 'none')
+          } else {
+            circleStart.setAttribute('fill', this.settings.COLOR_LINES)
+            circleEnd.setAttribute('fill', this.settings.COLOR_LINES)
+          }
+          wrapper.appendChild(circleStart)
+          wrapper.appendChild(circleEnd)
+        }
+
+
         const line = this.paper.line(startPoint.x, startPoint.y, endPoint.x, endPoint.y)
         if (this.settings.showGradient) {
           line.setAttribute('fill', 'none')
@@ -454,7 +470,8 @@ class Radix {
     } else {
       circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
-    circle.setAttribute('stroke-width', (this.settings.RULER_CIRCLE_STROKE * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-width', (this.settings.CIRCLE_RULER_STROKE * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_RULER)
     wrapper.appendChild(circle)
   }
 
@@ -473,6 +490,7 @@ class Radix {
       circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
     circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_CENTRAL * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_CENTRAL)
     wrapper.appendChild(circle)
     if (this.settings.showCentralOuterCircle) {
       // indoor circle 2
@@ -483,6 +501,7 @@ class Radix {
         circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
       }
       circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_CENTRAL * this.settings.SYMBOL_SCALE).toString())
+      circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_CENTRAL_OUTER)
       wrapper.appendChild(circle)
     }
 
@@ -494,6 +513,7 @@ class Radix {
       circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
     circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_SIGNS_DISK_OUTER * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_SIGNS_DISK_OUTER)
     wrapper.appendChild(circle)
 
     // inner circle
@@ -504,6 +524,7 @@ class Radix {
       circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
     }
     circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_SIGNS_DISK_INNER * this.settings.SYMBOL_SCALE).toString())
+    circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_SIGNS_DISK_INNER)
     wrapper.appendChild(circle)
 
     if (this.settings.showOuterCircle) {
@@ -515,6 +536,7 @@ class Radix {
         circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
       }
       circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_OUTER * this.settings.SYMBOL_SCALE).toString())
+      circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_OUTER)
       wrapper.appendChild(circle)
     }
 

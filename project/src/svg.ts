@@ -27,6 +27,8 @@ class SVG {
 
     const svg = this.document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    svg.setAttribute('id', elementId + '-svg')
     svg.setAttribute('style', 'position: relative; overflow: hidden;')
     svg.setAttribute('version', '1.1')
     svg.setAttribute('width', width.toString())
@@ -69,7 +71,7 @@ class SVG {
       defs.appendChild(gradientDef)
       defs.appendChild(gradientMask)
       svg.appendChild(defs)
-      wrapper.setAttribute('style', `fill:url(#${gradientMaskId});fill-opacity:1; stroke:url(#${gradientMaskId})`)
+      wrapper.setAttribute('style', `fill:url('#${gradientMaskId}');fill-opacity:1; stroke:url('#${gradientMaskId}')`)
     }
     svg.appendChild(wrapper)
 

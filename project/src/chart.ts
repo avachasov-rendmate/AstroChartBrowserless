@@ -33,6 +33,8 @@ class Chart {
       const paper = this.document.createElement('div')
       paper.setAttribute('id', elementId)
       this.document.body.appendChild(paper)
+    } else {
+      this.document.getElementById(elementId).innerHTML = ''
     }
 
     this.paper = new SVG(this.document, elementId, width, height, this.settings)

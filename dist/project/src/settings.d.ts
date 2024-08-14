@@ -112,7 +112,7 @@ export interface Settings {
     DIGNITIES_EXACT_EXALTATION_DEFAULT: Dignity[];
     DEBUG: boolean;
     NUMBER_STROKE: number;
-    RULER_CIRCLE_STROKE: number;
+    CIRCLE_RULER_STROKE: number;
     RULER_RAY_STROKE: number;
     CIRCLE_STROKE_CENTRAL: number;
     CIRCLE_STROKE_OUTER: number;
@@ -129,7 +129,11 @@ export interface Settings {
     CIRCLE_DASHARRAY_OUTER: string;
     CIRCLE_DASHARRAY_SIGNS_DISK_OUTER: string;
     CIRCLE_DASHARRAY_SIGNS_DISK_INNER: string;
+    CIRCLE_DASHARRAY_RULER: string;
     showPointDescription: boolean;
+    showAspectPoints: boolean;
+    SIGN_BG_STROKE: number;
+    CIRCLE_DASHARRAY_CENTRAL_OUTER: string;
 }
 declare const default_settings: Settings;
 export default default_settings;

@@ -111,7 +111,7 @@ export interface Settings {
   DIGNITIES_EXACT_EXALTATION_DEFAULT: Dignity[]
   DEBUG: boolean
   NUMBER_STROKE: number
-  RULER_CIRCLE_STROKE: number
+  CIRCLE_RULER_STROKE: number
   RULER_RAY_STROKE: number
   CIRCLE_STROKE_CENTRAL: number
   CIRCLE_STROKE_OUTER: number
@@ -128,10 +128,18 @@ export interface Settings {
   CIRCLE_DASHARRAY_OUTER: string
   CIRCLE_DASHARRAY_SIGNS_DISK_OUTER: string
   CIRCLE_DASHARRAY_SIGNS_DISK_INNER: string
+  CIRCLE_DASHARRAY_RULER: string
   showPointDescription: boolean
+  showAspectPoints: boolean
+  SIGN_BG_STROKE: number
+  CIRCLE_DASHARRAY_CENTRAL_OUTER: string
 }
 
 const settings: Settings = {
+  CIRCLE_DASHARRAY_CENTRAL_OUTER: '0',
+  CIRCLE_DASHARRAY_RULER: '0',
+  SIGN_BG_STROKE: 1,
+  showAspectPoints: false,
   showPointDescription: false,
   CUSPS_DASHARRAY: '5,5',
   showRulerRays: true,
@@ -147,17 +155,17 @@ const settings: Settings = {
   CIRCLE_DASHARRAY_OUTER: '0',
   CIRCLE_DASHARRAY_SIGNS_DISK_OUTER: '0',
   CIRCLE_DASHARRAY_SIGNS_DISK_INNER: '0',
-  RULER_CIRCLE_STROKE: 1,
+  CIRCLE_RULER_STROKE: 1,
   RULER_RAY_STROKE: 1,
   showAxis: true,
   NUMBER_STROKE: 1.5,
   // Enable / Disable gradient
-  showGradient: false,
+  showGradient: true,
   GRADIENT: {
-    start: '#fff',
-    stop: '#f0f0f0',
+    start: '#e00909',
+    stop: '#000000',
     type: 'linear',
-    rotation: 45
+    rotation: 0
   },
 
   // Scale of symbols
@@ -275,8 +283,8 @@ const settings: Settings = {
   // Cusps strength of lines
   CUSPS_STROKE: 1,
   COLOR_NUMBERS: '#000',
-  COLOR_SIGN_LIGHT: '#f0f0f0',
-  COLOR_SIGN_DARK: '#838080',
+  COLOR_SIGN_DARK: '#f0f0f0',
+  COLOR_SIGN_LIGHT: '#838080',
   COLOR_SIGN_BG_LIGHT: '#f0f0f0',
   COLOR_SIGN_BG_DARK: '#838080',
 
