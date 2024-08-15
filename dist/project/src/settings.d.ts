@@ -134,6 +134,7 @@ export interface Settings {
     showAspectPoints: boolean;
     SIGN_BG_STROKE: number;
     CIRCLE_DASHARRAY_CENTRAL_OUTER: string;
+    ZODIAC_SIGNS_STYLE: string;
 }
 declare const default_settings: Settings;
 export default default_settings;
