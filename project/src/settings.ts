@@ -139,10 +139,12 @@ export interface Settings {
     showAspectPoints: boolean
     SIGN_BG_STROKE: number
     CIRCLE_DASHARRAY_CENTRAL_OUTER: string
-    ZODIAC_SIGNS_STYLE: string
+    STYLE_ZODIAC_SIGNS: string
+    STYLE_DIGITS: string
 }
 
 const settings: Settings = {
+    STYLE_DIGITS: 'arabic',
     CIRCLE_DASHARRAY_CENTRAL_OUTER: '0',
     CIRCLE_DASHARRAY_RULER: '0',
     SIGN_BG_STROKE: 1,
@@ -231,7 +233,7 @@ const settings: Settings = {
 
     // Background wrapper element ID
     ID_BG: 'bg',
-    ZODIAC_SIGNS_STYLE:'default',
+    STYLE_ZODIAC_SIGNS:'default',
     // Color of circles in charts
     COLOR_CIRCLES: '#333',
     // Color of lines in charts

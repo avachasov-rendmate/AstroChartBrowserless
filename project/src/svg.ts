@@ -763,7 +763,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_ARIES
             )
 
@@ -801,7 +801,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_PISCES
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -836,7 +836,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_GEMINI
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -871,7 +871,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_CANCER
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -906,7 +906,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_LEO
             )
 
@@ -942,7 +942,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_VIRGO
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -977,7 +977,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_LIBRA
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -1012,7 +1012,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_SCORPIO
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -1049,7 +1049,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_SAGITTARIUS
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -1084,7 +1084,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_CAPRICORN
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -1118,7 +1118,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_AQUARIUS
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -1153,7 +1153,7 @@ class SVG {
                 x,
                 y,
                 'zodiac',
-                this.settings.ZODIAC_SIGNS_STYLE,
+                this.settings.STYLE_ZODIAC_SIGNS,
                 this.settings.SYMBOL_PISCES
             )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
@@ -1258,18 +1258,21 @@ class SVG {
     }
 
     number1(x: number, y: number): Element {
-        // center symbol
-        const xShift = 0 // px
-        const yShift = -3 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '1'
+            )
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_1))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -2.5128753,7.7578884 1.00515009,0 m 3.01545031,-9.5832737 -1.0051501,1.8253853 -2.51287527,7.7578884 m 3.51802537,-9.5832737 -3.01545031,9.5832737 m 3.01545031,-9.5832737 -1.5077251,1.3690388 -1.50772521,0.9126929 -1.00515009,0.4563463 m 2.5128753,-0.9126927 -1.00515016,0.4563464 -1.50772514,0.4563463')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
@@ -1278,18 +1281,21 @@ class SVG {
     }
 
     number2(x: number, y: number): Element {
-        // center symbol
-        const xShift = -2 // px
-        const yShift = -3 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '2'
+            )
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_2))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' 0,-0.4545454 0.4545454,0 0,0.9090909 -0.9090909,0 0,-0.9090909 0.4545455,-0.9090909 0.4545454,-0.4545455 1.36363637,-0.4545454 1.36363633,0 1.3636364,0.4545454 0.4545455,0.9090909 0,0.9090909 -0.4545455,0.909091 -0.9090909,0.9090909 -4.5454546,2.72727269 -0.9090909,0.90909091 -0.9090909,1.8181818 m 6.8181818,-9.0909091 0.4545455,0.9090909 0,0.9090909 -0.4545455,0.909091 -0.9090909,0.9090909 -1.36363633,0.9090909 m 1.36363633,-5 0.4545455,0.4545454 0.4545454,0.9090909 0,0.9090909 -0.4545454,0.909091 -0.9090909,0.9090909 -3.6363637,2.72727269 m -1.3636363,1.81818181 0.4545454,-0.4545454 0.9090909,0 2.27272732,0.4545454 2.27272728,0 0.4545454,-0.4545454 m -5,0 2.27272732,0.9090909 2.27272728,0 m -4.5454546,-0.9090909 2.27272732,1.3636363 1.36363638,0 0.9090909,-0.4545454 0.4545454,-0.9090909 0,-0.4545455')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
@@ -1298,18 +1304,21 @@ class SVG {
     }
 
     number3(x: number, y: number): Element {
-        // center symbol
-        const xShift = -2 // px
-        const yShift = -3 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '3'
+            )
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_3))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' 0,-0.4545454 0.45454549,0 0,0.9090909 -0.90909089,0 0,-0.9090909 0.4545454,-0.9090909 0.45454549,-0.4545455 1.36363636,-0.4545454 1.36363635,0 1.3636364,0.4545454 0.4545454,0.9090909 0,0.9090909 -0.4545454,0.909091 -0.4545455,0.4545454 -0.9090909,0.4545455 -1.36363635,0.4545454 m 2.27272725,-4.0909091 0.4545455,0.9090909 0,0.9090909 -0.4545455,0.909091 -0.4545454,0.4545454 m -0.4545455,-3.6363636 0.4545455,0.4545454 0.4545454,0.9090909 0,0.9090909 -0.4545454,0.909091 -0.9090909,0.9090909 -0.90909095,0.4545454 m -0.9090909,0 0.9090909,0 1.36363635,0.4545455 0.4545455,0.45454542 0.4545454,0.90909091 0,1.36363637 -0.4545454,0.9090909 -0.9090909,0.4545455 -1.3636364,0.4545454 -1.3636364,0 -1.3636363,-0.4545454 -0.4545455,-0.4545455 -0.4545454,-0.9090909 0,-0.90909091 0.9090909,0 0,0.90909091 -0.4545455,0 0,-0.45454546 m 5,-1.81818182 0.4545455,0.90909091 0,1.36363637 -0.4545455,0.9090909 m -1.36363635,-4.0909091 0.90909095,0.4545455 0.4545454,0.90909088 0,1.81818182 -0.4545454,0.9090909 -0.45454549,0.4545455 -0.90909091,0.4545454')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
@@ -1318,18 +1327,20 @@ class SVG {
     }
 
     number4(x: number, y: number): Element {
-        // center symbol
-        const xShift = 1 // px
-        const yShift = -4 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '4'
+            )
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_4))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -2.28678383,7.7750651 0.91471356,0 m 2.74414057,-9.6044922 -0.9147135,1.8294271 -2.28678386,7.7750651 m 3.20149736,-9.6044922 -2.74414057,9.6044922 m 2.74414057,-9.6044922 -7.3177083,6.8603516 7.3177083,0')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
@@ -1338,18 +1349,21 @@ class SVG {
     }
 
     number5(x: number, y: number): Element {
-        // center symbol
-        const xShift = -2 // px
-        const yShift = -5 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '5'
+            )
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_5))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -2.27272725,4.5454545 m 2.27272725,-4.5454545 4.54545455,0 m -4.54545455,0.4545454 3.63636365,0 m -4.0909091,0.4545455 2.2727273,0 1.8181818,-0.4545455 0.9090909,-0.4545454 m -6.8181818,4.5454545 0.4545454,-0.4545454 1.3636364,-0.4545455 1.36363636,0 1.36363634,0.4545455 0.4545455,0.4545454 0.4545454,0.90909092 0,1.36363638 -0.4545454,1.3636364 -0.9090909,0.9090909 -1.81818185,0.4545454 -1.36363635,0 -0.9090909,-0.4545454 -0.4545455,-0.4545455 -0.4545454,-0.9090909 0,-0.9090909 0.9090909,0 0,0.9090909 -0.4545455,0 0,-0.45454545 m 5,-2.72727275 0.4545455,0.90909092 0,1.36363638 -0.4545455,1.3636364 -0.9090909,0.9090909 m -0.45454544,-5.4545455 0.90909094,0.4545455 0.4545454,0.9090909 0,1.8181818 -0.4545454,1.3636364 -0.90909094,0.9090909 -0.90909091,0.4545454')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
@@ -1358,18 +1372,21 @@ class SVG {
     }
 
     number6(x: number, y: number): Element {
-        // center symbol
-        const xShift = 3 // px
-        const yShift = -3 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '6'
+            )
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_6))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' 0,-0.4545455 -0.4545455,0 0,0.9090909 0.9090909,0 0,-0.9090909 -0.4545454,-0.9090909 -0.909091,-0.4545454 -1.3636363,0 -1.36363638,0.4545454 -0.90909092,0.9090909 -0.9090909,1.3636364 -0.4545455,1.3636364 -0.4545454,1.81818178 0,1.36363636 0.4545454,1.36363636 0.4545455,0.4545455 0.9090909,0.4545454 1.36363637,0 1.36363633,-0.4545454 0.9090909,-0.9090909 0.4545455,-0.90909096 0,-1.36363636 -0.4545455,-0.90909088 -0.4545454,-0.4545455 -0.9090909,-0.4545454 -1.36363638,0 -0.90909092,0.4545454 -0.4545454,0.4545455 -0.4545455,0.90909088 m 1.36363636,-4.54545458 -0.90909086,1.3636364 -0.4545455,1.3636364 -0.4545455,1.81818178 0,1.81818182 0.4545455,0.9090909 m 4.0909091,-0.4545454 0.4545454,-0.90909096 0,-1.36363636 -0.4545454,-0.90909088 m -0.9090909,-5 -0.90909093,0.4545454 -0.90909091,1.3636364 -0.45454546,0.9090909 -0.4545454,1.3636364 -0.4545455,1.81818178 0,2.27272732 0.4545455,0.9090909 0.4545454,0.4545454 m 1.36363637,0 0.90909093,-0.4545454 0.4545454,-0.4545455 0.4545455,-1.36363636 0,-1.81818182 -0.4545455,-0.90909092 -0.4545454,-0.4545454')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
@@ -1378,18 +1395,21 @@ class SVG {
     }
 
     number7(x: number, y: number): Element {
-        // center symbol
-        const xShift = -4 // px
-        const yShift = -4 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '7'
+            )
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_7))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -0.9090909,2.7272727 m 6.8181818,-2.7272727 -0.4545454,1.3636363 -0.909091,1.3636364 -1.8181818,2.2727273 -0.90909088,1.36363633 -0.45454546,1.36363637 -0.45454545,1.8181818 m 0.90909091,-3.63636362 -0.90909091,1.81818182 -0.45454546,1.8181818 m 4.09090905,-6.8181818 -2.72727268,2.72727272 -0.90909091,1.36363637 -0.45454546,0.90909091 -0.45454545,1.8181818 0.90909091,0 m -1.36363641,-8.1818182 1.36363641,-1.3636363 0.90909091,0 2.27272728,1.3636363 m -3.63636365,-0.9090909 1.36363637,0 2.27272728,0.9090909 m -4.5454546,0 0.90909095,-0.4545454 1.36363637,0 2.27272728,0.4545454 0.9090909,0 0.4545455,-0.4545454 0.4545454,-0.9090909')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
@@ -1398,18 +1418,21 @@ class SVG {
     }
 
     number8(x: number, y: number): Element {
-        // center symbol
-        const xShift = -1 // px
-        const yShift = -5 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '8'
+            )
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_8))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -1.3631244,0.4543748 -0.4543748,0.4543748 -0.4543748,0.9087496 0,1.3631244 0.4543748,0.9087496 0.9087496,0.4543748 1.3631244,0 1.3631244,-0.4543748 0.9087496,-0.4543748 0.4543748,-0.9087496 0,-1.3631244 -0.4543748,-0.9087496 -0.9087496,-0.4543748 -1.8174992,0 m 0.9087496,0 -2.271874,0.4543748 m 0,0.4543748 -0.4543748,0.9087496 0,1.8174992 0.4543748,0.4543748 m -0.4543748,0 1.3631244,0.4543748 m 0.4543748,0 1.8174992,-0.4543748 m 0.4543748,-0.4543748 0.4543748,-0.9087496 0,-1.3631244 -0.4543748,-0.9087496 m 0.4543748,0 -1.8174992,-0.4543748 m -0.9087496,0 -0.9087496,0.9087496 -0.4543748,0.9087496 0,1.8174992 0.4543748,0.9087496 m 1.3631244,0 0.9087496,-0.4543748 0.4543748,-0.4543748 0.4543748,-0.9087496 0,-1.8174992 -0.4543748,-0.9087496 m -2.7262488,4.543748 -1.8174992,0.4543748 -0.9087496,0.90874964 -0.4543748,0.9087496 0,1.36312436 0.4543748,0.9087496 1.3631244,0.4543748 1.8174992,0 1.8174992,-0.4543748 0.4543748,-0.4543748 0.4543748,-0.9087496 0,-1.36312436 -0.4543748,-0.9087496 -0.4543748,-0.45437484 -0.9087496,-0.4543748 m -0.9087496,0 -2.271874,0.4543748 m 0.4543748,0 -0.9087496,0.90874964 -0.4543748,0.9087496 0,1.36312436 0.4543748,0.9087496 m -0.4543748,0 2.271874,0.4543748 2.7262488,-0.4543748 m 0,-0.4543748 0.4543748,-0.9087496 0,-1.36312436 -0.4543748,-0.9087496 m 0,-0.45437484 -1.3631244,-0.4543748 m -0.9087496,0 -0.9087496,0.4543748 -0.9087496,0.90874964 -0.4543748,0.9087496 0,1.36312436 0.4543748,0.9087496 0.4543748,0.4543748 m 1.8174992,0 0.9087496,-0.4543748 0.4543748,-0.4543748 0.4543748,-0.9087496 0,-1.81749916 -0.4543748,-0.90874964 -0.4543748,-0.4543748')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
@@ -1418,18 +1441,21 @@ class SVG {
     }
 
     number9(x: number, y: number): Element {
-        // center symbol
-        const xShift = 1 // px
-        const yShift = -2 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'digits',
+                this.settings.STYLE_DIGITS,
+                '9'
+            )
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_9))
         wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -0.4545455,0.9090909 -0.4545454,0.4545455 -0.9090909,0.45454542 -1.36363638,0 -0.90909092,-0.45454542 -0.4545454,-0.4545455 -0.4545455,-0.9090909 0,-1.3636364 0.4545455,-0.9090909 0.90909086,-0.9090909 1.36363637,-0.4545454 1.36363637,0 0.9090909,0.4545454 0.4545455,0.4545455 0.4545454,1.3636363 0,1.3636364 -0.4545454,1.81818182 -0.4545455,1.36363637 -0.9090909,1.36363641 -0.9090909,0.9090909 -1.36363638,0.4545454 -1.36363632,0 -0.909091,-0.4545454 -0.4545454,-0.9090909 0,-0.90909096 0.9090909,0 0,0.90909096 -0.4545455,0 0,-0.4545455 m 1.3636364,-3.1818182 -0.4545454,-0.9090909 0,-1.3636364 0.4545454,-0.9090909 m 4.0909091,-0.4545454 0.4545455,0.9090909 0,1.8181818 -0.4545455,1.81818182 -0.4545455,1.36363637 -0.9090909,1.36363641 m -1.81818178,-2.72727278 -0.45454546,-0.45454542 -0.45454546,-0.9090909 0,-1.8181819 0.45454546,-1.3636363 0.45454546,-0.4545455 0.90909091,-0.4545454 m 1.36363637,0 0.4545454,0.4545454 0.4545455,0.9090909 0,2.2727273 -0.4545455,1.81818182 -0.4545454,1.36363637 -0.4545455,0.90909091 -0.90909087,1.3636364 -0.90909091,0.4545454')
+        node.setAttribute('d', symbol)
         this.setNumberColor(node)
         wrapper.appendChild(node)
 
