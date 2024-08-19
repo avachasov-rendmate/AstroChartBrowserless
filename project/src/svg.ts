@@ -56,6 +56,15 @@ class SVG {
                 stop = this.document.createElementNS(svg.namespaceURI, 'stop')
 
             gradientDef.setAttribute('id', gradientDefId)
+            gradientDef.setAttribute('gradientUnits', 'userSpaceOnUse')
+
+            // x1="0" y1="0" x2="200" y2="200"
+            gradientDef.setAttribute('x1', 0)
+            gradientDef.setAttribute('y1', 0)
+            gradientDef.setAttribute('x2', width)
+            gradientDef.setAttribute('y2', height)
+
+
             gradientDef.setAttribute('gradientTransform', `rotate(${this.settings.GRADIENT.rotation || 0})`)
             start.setAttribute('stop-color', this.settings.GRADIENT.start)
             start.setAttribute('offset', '0')
@@ -66,17 +75,17 @@ class SVG {
             gradientDef.appendChild(start)
             gradientDef.appendChild(stop)
 
-            gradientMask.setAttribute('id', gradientMaskId)
-            gradientMask.setAttribute('xlink:href', `#${gradientDefId}`)
-            gradientMask.setAttribute('gradientUnits', 'userSpaceOnUse')
-
-            gradientDef.appendChild(start)
-            gradientDef.appendChild(stop)
+            // gradientMask.setAttribute('id', gradientMaskId)
+            // gradientMask.setAttribute('xlink:href', `#${gradientDefId}`)
+            // gradientMask.setAttribute('gradientUnits', 'userSpaceOnUse')
+            //
+            // gradientDef.appendChild(start)
+            // gradientDef.appendChild(stop)
 
             defs.appendChild(gradientDef)
-            defs.appendChild(gradientMask)
+            // defs.appendChild(gradientMask)
             svg.appendChild(defs)
-            wrapper.setAttribute('style', `fill:url('#${gradientMaskId}');fill-opacity:1; stroke:url('#${gradientMaskId}')`)
+            wrapper.setAttribute('style', `fill:url('#${gradientDefId}');fill-opacity:1; stroke:url('#${gradientDefId}')`)
         }
         svg.appendChild(wrapper)
 
@@ -271,7 +280,6 @@ class SVG {
         node.setAttribute('stroke-width', (this.settings.SYMBOL_AXIS_STROKE * this.settings.SYMBOL_SCALE).toString())
         node.setAttribute('fill', 'none')
     }
-
     setNumberColor(node: Element): void {
         if (!this.settings.showGradient) {
             node.setAttribute('stroke', this.settings.COLOR_NUMBERS)

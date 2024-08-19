@@ -136,6 +136,10 @@ export interface Settings {
     CIRCLE_DASHARRAY_CENTRAL_OUTER: string;
     STYLE_ZODIAC_SIGNS: string;
     STYLE_DIGITS: string;
+    OFFSET_CENTER_OUTER_CIRCLE: number;
+    OFFSET_NUMBERS: number;
+    STROKE_ASPECTS: number;
+    BG_PADDING: number;
 }
 declare const default_settings: Settings;
 export default default_settings;

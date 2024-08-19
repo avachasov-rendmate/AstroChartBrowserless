@@ -141,9 +141,14 @@ export interface Settings {
     CIRCLE_DASHARRAY_CENTRAL_OUTER: string
     STYLE_ZODIAC_SIGNS: string
     STYLE_DIGITS: string
+    OFFSET_CENTER_OUTER_CIRCLE: number
+    OFFSET_NUMBERS: number
+    STROKE_ASPECTS: number
+    BG_PADDING: number
 }
 
 const settings: Settings = {
+    STROKE_ASPECTS: 1,
     STYLE_DIGITS: 'arabic',
     CIRCLE_DASHARRAY_CENTRAL_OUTER: '0',
     CIRCLE_DASHARRAY_RULER: '0',
@@ -169,7 +174,7 @@ const settings: Settings = {
     showAxis: true,
     NUMBER_STROKE: 1.5,
     // Enable / Disable gradient
-    showGradient: true,
+    showGradient: false,
     GRADIENT: {
         start: '#e00909',
         stop: '#000000',
@@ -181,10 +186,11 @@ const settings: Settings = {
     SYMBOL_SCALE: 1,
 
     // BG color
-    COLOR_BACKGROUND: '#fff',
+    COLOR_BACKGROUND: '#939090',
 
     // Color of planet's symbols
     COLOR_POINTS: '#000',
+    BG_PADDING: 0,
 
     // Size of description text next to the planet: angle, retrograde, dignities, ...
     POINTS_TEXT_SIZE: 8,
@@ -316,6 +322,8 @@ const settings: Settings = {
 
     // 0 degree is on the West
     SHIFT_IN_DEGREES: 180,
+    OFFSET_NUMBERS: 5,
+    OFFSET_CENTER_OUTER_CIRCLE: 20,
 
     // No fill, only stroke
     STROKE_ONLY: false,

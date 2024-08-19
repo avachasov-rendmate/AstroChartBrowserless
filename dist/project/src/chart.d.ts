@@ -23,17 +23,17 @@ declare class Chart {
     constructor(document: any, elementId: string, width: number, height: number, settings?: Partial<Settings>);
     destroy(): void;
     /**
-   * Display radix horoscope
-   *
-   * @param {Object} data
-   * @example
-   *  {
-   *    "points":{"Moon":[0], "Sun":[30],  ... },
-   *    "cusps":[300, 340, 30, 60, 75, 90, 116, 172, 210, 236, 250, 274]
-   *  }
-   *
-   * @return {Radix} radix
-   */
+     * Display radix horoscope
+     *
+     * @param {Object} data
+     * @example
+     *  {
+     *    "points":{"Moon":[0], "Sun":[30],  ... },
+     *    "cusps":[300, 340, 30, 60, 75, 90, 116, 172, 210, 236, 250, 274]
+     *  }
+     *
+     * @return {Radix} radix
+     */
     radix(data: AstroData): Radix;
     /**
      * Scale chart
