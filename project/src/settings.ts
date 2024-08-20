@@ -22,6 +22,7 @@ export interface Gradient {
 }
 
 export interface Settings {
+    showBackground: boolean
     showAxis: boolean
     showGradient: boolean
     GRADIENT: Gradient
@@ -145,9 +146,15 @@ export interface Settings {
     OFFSET_NUMBERS: number
     STROKE_ASPECTS: number
     BG_PADDING: number
+    signsDiskStrokeOnly: boolean
+    COLOR_ASPECTS: string
+    ASPECT_POINT_SCALE: number
 }
 
 const settings: Settings = {
+    COLOR_ASPECTS: '#333',
+    ASPECT_POINT_SCALE: 0.5,
+    signsDiskStrokeOnly: false,
     STROKE_ASPECTS: 1,
     STYLE_DIGITS: 'arabic',
     CIRCLE_DASHARRAY_CENTRAL_OUTER: '0',
@@ -239,6 +246,7 @@ const settings: Settings = {
 
     // Background wrapper element ID
     ID_BG: 'bg',
+    showBackground: true,
     STYLE_ZODIAC_SIGNS:'default',
     // Color of circles in charts
     COLOR_CIRCLES: '#333',

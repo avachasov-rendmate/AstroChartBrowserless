@@ -122,7 +122,7 @@ class Radix {
      * Draw background
      */
     drawBg(): void {
-        if (!this.settings.showGradient) {
+        if (!this.settings.showGradient && this.settings.showBackground) {
             const universe = this.universe
             const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_BG, this.paper.root.id)
 
@@ -142,7 +142,7 @@ class Radix {
      */
     drawUniverse(): void {
         const universe = this.universe
-        const strokeMode = this.settings.STROKE_ONLY || this.settings.showGradient
+        const strokeMode = this.settings.STROKE_ONLY || this.settings.showGradient || this.settings.signsDiskStrokeOnly
         const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS, this.paper.root.id)
         // colors
         for (let i = 0, step = 30, start = this.shift, len = 12; i < len; i++) {
@@ -179,8 +179,6 @@ class Radix {
         const universe = this.universe
         const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_POINTS, this.paper.root.id)
 
-        const gap = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO)
-        const step = (gap - 2 * (this.settings.PADDING * this.settings.SYMBOL_SCALE)) / Object.keys(this.data.planets).length
 
         const pointerRadius = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.rulerRadius)
         let startPosition
@@ -420,14 +418,14 @@ class Radix {
 
                 if (this.settings.showAspectPoints) {
                     const
-                        circleStart = this.paper.circle(startPoint.x, startPoint.y, this.settings.STROKE_ASPECTS * 2),
-                        circleEnd = this.paper.circle(endPoint.x, endPoint.y, this.settings.STROKE_ASPECTS * 2)
+                        circleStart = this.paper.circle(startPoint.x, startPoint.y, this.settings.STROKE_ASPECTS * this.settings.ASPECT_POINT_SCALE),
+                        circleEnd = this.paper.circle(endPoint.x, endPoint.y, this.settings.STROKE_ASPECTS * this.settings.ASPECT_POINT_SCALE)
                     if (this.settings.showGradient) {
                         circleStart.setAttribute('fill', 'none')
                         circleEnd.setAttribute('fill', 'none')
                     } else {
-                        circleStart.setAttribute('fill', this.settings.COLOR_LINES)
-                        circleEnd.setAttribute('fill', this.settings.COLOR_LINES)
+                        circleStart.setAttribute('fill', this.settings.COLOR_ASPECTS)
+                        circleEnd.setAttribute('fill', this.settings.COLOR_ASPECTS)
                     }
                     wrapper.appendChild(circleStart)
                     wrapper.appendChild(circleEnd)
@@ -438,7 +436,7 @@ class Radix {
                 if (this.settings.showGradient) {
                     line.setAttribute('fill', 'none')
                 } else {
-                    line.setAttribute('stroke', this.settings.STROKE_ONLY ? this.settings.COLOR_LINES : aspectsList[i].aspect.color)
+                    line.setAttribute('stroke', this.settings.COLOR_ASPECTS)
                 }
                 line.setAttribute('stroke-width', (this.settings.STROKE_ASPECTS * this.settings.SYMBOL_SCALE).toString())
 

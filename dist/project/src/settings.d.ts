@@ -17,6 +17,7 @@ export interface Gradient {
     rotation?: number;
 }
 export interface Settings {
+    showBackground: boolean;
     showAxis: boolean;
     showGradient: boolean;
     GRADIENT: Gradient;
@@ -140,6 +141,9 @@ export interface Settings {
     OFFSET_NUMBERS: number;
     STROKE_ASPECTS: number;
     BG_PADDING: number;
+    signsDiskStrokeOnly: boolean;
+    COLOR_ASPECTS: string;
+    ASPECT_POINT_SCALE: number;
 }
 declare const default_settings: Settings;
 export default default_settings;
