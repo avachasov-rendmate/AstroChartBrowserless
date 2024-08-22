@@ -79,6 +79,7 @@ declare class SVG {
     nnode(x: number, y: number): Element;
     snode(x: number, y: number): Element;
     fortune(x: number, y: number): Element;
+    addZodiacSymbol(x: number, y: number, symbol: any, color: string): Element;
     aries(x: number, y: number, color: string): Element;
     taurus(x: number, y: number, color: string): Element;
     gemini(x: number, y: number, color: string): Element;

@@ -14,7 +14,6 @@ import type {Settings} from './settings'
 export const getPointPosition = (cx: number, cy: number, radius: number, angle: number, astrology: {
     SHIFT_IN_DEGREES: number
 }): { x: number; y: number } => {
-    console.log(astrology)
     const angleInRadius = (astrology.SHIFT_IN_DEGREES - angle) * Math.PI / 180
     const xPos = cx + radius * Math.cos(angleInRadius)
     const yPos = cy + radius * Math.sin(angleInRadius)

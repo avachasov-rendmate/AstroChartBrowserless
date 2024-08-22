@@ -156,7 +156,7 @@ const settings: Settings = {
     ASPECT_POINT_SCALE: 0.5,
     signsDiskStrokeOnly: false,
     STROKE_ASPECTS: 1,
-    STYLE_DIGITS: 'roman',
+    STYLE_DIGITS: 'arabic',
     CIRCLE_DASHARRAY_CENTRAL_OUTER: '0',
     CIRCLE_DASHARRAY_RULER: '0',
     SIGN_BG_STROKE: 1,
