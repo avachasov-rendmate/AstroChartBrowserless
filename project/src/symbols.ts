@@ -210,7 +210,14 @@ class Symbols {
                         shift: { x: -7, y: -7 }
                     }
                 }
-            }
+            },
+            zodiacTextRotate: [
+                {
+                    xMin: 0,
+                    y: 0,
+                    rotate: 0
+                }
+            ]
         }
     }
 
@@ -219,6 +226,12 @@ class Symbols {
         const cX = Math.round(x + (data.shift.x * this.settings.SYMBOL_SCALE))
         const cY = Math.round(y + (data.shift.y * this.settings.SYMBOL_SCALE))
         return `m${cX},${cY} ${data.symbol}`
+    }
+    getRotation(x: number, y: number, storageName:string): string {
+        const
+            data = this.storage[storageName],
+            angle=0;
+        return `rotate(${angle})`
     }
 }
 

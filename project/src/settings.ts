@@ -156,7 +156,7 @@ const settings: Settings = {
     ASPECT_POINT_SCALE: 0.5,
     signsDiskStrokeOnly: false,
     STROKE_ASPECTS: 1,
-    STYLE_DIGITS: 'arabic',
+    STYLE_DIGITS: 'roman',
     CIRCLE_DASHARRAY_CENTRAL_OUTER: '0',
     CIRCLE_DASHARRAY_RULER: '0',
     SIGN_BG_STROKE: 1,
@@ -247,7 +247,7 @@ const settings: Settings = {
     // Background wrapper element ID
     ID_BG: 'bg',
     showBackground: true,
-    STYLE_ZODIAC_SIGNS:'default',
+    STYLE_ZODIAC_SIGNS:'text',
     // Color of circles in charts
     COLOR_CIRCLES: '#333',
     // Color of lines in charts
