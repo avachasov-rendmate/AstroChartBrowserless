@@ -373,11 +373,15 @@ class Radix {
                 }
 
                 newLine.setAttribute('stroke-dasharray', this.settings.CUSPS_DASHARRAY)
+                newLine.setAttribute('stroke-linecap', 'round')
+                newLine.setAttribute('shape-rendering', 'geometricPrecision')
+                newLine.setAttribute('stroke-dashoffset', '5')
+                newLine.setAttribute('vector-effect', 'non-scaling-stroke')
 
                 if (mainAxis.includes(i)) {
-                    newLine.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
+                    newLine.setAttribute('stroke-width', this.settings.CUSPS_STROKE)
                 } else {
-                    newLine.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
+                    newLine.setAttribute('stroke-width', this.settings.CUSPS_STROKE)
                 }
 
                 wrapper.appendChild(newLine)
@@ -484,7 +488,7 @@ class Radix {
                 } else {
                     line.setAttribute('stroke', this.settings.COLOR_CIRCLES)
                 }
-                line.setAttribute('stroke-width', (this.settings.RULER_RAY_STROKE * this.settings.SYMBOL_SCALE))
+                line.setAttribute('stroke-width', this.settings.RULER_RAY_STROKE)
                 wrapper.appendChild(line)
             }, this)
         }
@@ -514,7 +518,7 @@ class Radix {
         } else {
             circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
         }
-        circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_CENTRAL * this.settings.SYMBOL_SCALE).toString())
+        circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_CENTRAL).toString())
         circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_CENTRAL)
         wrapper.appendChild(circle)
         if (this.settings.showCentralOuterCircle) {
@@ -525,7 +529,7 @@ class Radix {
             } else {
                 circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
             }
-            circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_CENTRAL * this.settings.SYMBOL_SCALE).toString())
+            circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_CENTRAL).toString())
             circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_CENTRAL_OUTER)
             wrapper.appendChild(circle)
         }
@@ -537,7 +541,7 @@ class Radix {
         } else {
             circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
         }
-        circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_SIGNS_DISK_OUTER * this.settings.SYMBOL_SCALE).toString())
+        circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_SIGNS_DISK_OUTER).toString())
         circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_SIGNS_DISK_OUTER)
         wrapper.appendChild(circle)
 
@@ -548,7 +552,7 @@ class Radix {
         } else {
             circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
         }
-        circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_SIGNS_DISK_INNER * this.settings.SYMBOL_SCALE).toString())
+        circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_SIGNS_DISK_INNER).toString())
         circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_SIGNS_DISK_INNER)
         wrapper.appendChild(circle)
 
@@ -560,7 +564,7 @@ class Radix {
             } else {
                 circle.setAttribute('stroke', this.settings.COLOR_CIRCLES)
             }
-            circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_OUTER * this.settings.SYMBOL_SCALE).toString())
+            circle.setAttribute('stroke-width', (this.settings.CIRCLE_STROKE_OUTER).toString())
             circle.setAttribute('stroke-dasharray', this.settings.CIRCLE_DASHARRAY_OUTER)
             wrapper.appendChild(circle)
         }

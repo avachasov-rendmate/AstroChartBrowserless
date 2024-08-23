@@ -66,10 +66,10 @@ class Chart {
 
         radix.drawBg()
         radix.drawUniverse()
-        radix.drawRuler()
         radix.drawPoints()
         radix.drawCusps()
         if (this.settings.showAxis) radix.drawAxis()
+        radix.drawRuler()
         radix.drawCircles()
         return radix
     }

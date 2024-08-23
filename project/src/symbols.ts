@@ -212,89 +212,89 @@ class Symbols {
                 }
             },
             zodiacTextRotate: [
-                { // Aries
+                { // sector 1
                     x1: 399,
                     y1: 46,
                     x2: 551,
                     y2: 140,
                     angle: 18
                 },
-                { // Pisces
+                { // sector 2
                     x1 : 570,
                     y1 : 101,
                     x2 : 699,
                     y2 : 228,
                     angle: 45
                 },
-                { // Aquarius
+                { // sector 3
                     x1 : 662,
                     y1 : 249,
                     x2 : 752,
                     y2 : 399,
                     angle: 75
                 },
-                { // Capricorn
+                { // sector 4
                     x1 : 663,
                     y1 : 403,
                     x2 : 767,
                     y2 : 550,
                     angle: -75
                 },
-                { // Sagittarius
+                { // sector 5
                     x1 : 550,
                     y1 : 555,
                     x2 : 713,
                     y2 : 709,
                     angle: -45
                 },
-                { // Scorpio
+                { // sector 6
                     x1 : 397,
                     y1 : 683,
                     x2 : 573,
                     y2 : 757,
                     angle: -18
                 },
-                { // Libra
+                { // sector 7
                     x1 : 230,
                     y1 : 607,
                     x2 : 402,
                     y2 : 815,
                     angle: 18
                 },
-                { // Virgo
+                { // sector 8
                     x1 : 94,
                     y1 : 552,
                     x2 : 246,
                     y2 : 703,
                     angle: 45
                 },
-                { // Leo
+                { // sector 9
                     x1 : 42,
                     y1 : 400,
                     x2 : 153,
                     y2 : 564,
                     angle: 75
                 },
-                { // Cancer
+                { // sector 10
                     x1 : 27,
                     y1 : 228,
                     x2 : 157,
                     y2 : 399,
                     angle : -75
                 },
-                { // Gemini
+                { // sector 11
                     x1 : 94,
                     y1 : 101,
                     x2 : 223,
                     y2 : 249,
                     angle: -45
                 },
-                { // Taurus
+                { // sector 12
                     x1 : 230,
                     y1 : 46,
                     x2 : 382,
                     y2 : 140,
-                    angle: -18
+                    angle: -15.5
                 }
             ]
         }
@@ -302,8 +302,8 @@ class Symbols {
 
     getSymbol(x: number, y: number, storageName: string, type: string, value: string): any {
         const data = this.storage[storageName][type][value.toLowerCase()]
-        const cX = Math.round(x + (data.shift.x * this.settings.SYMBOL_SCALE))
-        const cY = Math.round(y + (data.shift.y * this.settings.SYMBOL_SCALE))
+        const cX = Math.round(x + data.shift.x * this.settings.SYMBOL_SCALE)
+        const cY = Math.round(y + data.shift.y * this.settings.SYMBOL_SCALE)
         return {
             path: `M${cX},${cY} ${data.symbol}`,
             shift: data.shift
@@ -312,16 +312,15 @@ class Symbols {
     getRotation(x: number, y: number): string {
         if (this.settings.STYLE_ZODIAC_SIGNS === 'text') {
             const
-                data = this.storage.zodiacTextRotate;
+                data = this.storage.zodiacTextRotate
             for (const segment of data) {
                 if (x >= segment.x1 && x <= segment.x2 && y >= segment.y1 && y <= segment.y2) {
-                    console.log(segment.angle);
-                    return `rotate(${segment.angle}, ${x}, ${y})`;
+                    return `rotate(${segment.angle}, ${x}, ${y})`
                 }
             }
-            return `rotate(0)`;
+            return `rotate(0)`
         } else {
-            return '';
+            return ''
         }
     }
 }

@@ -269,9 +269,9 @@ class SVG {
     setSignColor(node: Element, color: string): void {
         if (!this.settings.showGradient) {
             node.setAttribute('stroke', color)
+            node.setAttribute('fill', color)
         }
         node.setAttribute('stroke-width', this.settings.SIGNS_STROKE.toString())
-        node.setAttribute('fill', 'none')
     }
     setAxisColor(node: Element): void {
         if (!this.settings.showGradient) {
@@ -756,18 +756,22 @@ class SVG {
     }
     addZodiacSymbol(x: number, y: number, symbol: any, color: string): Element {
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        // wrapper.setAttribute('id', this.getSignWrapperId(this.settings.SYMBOL_ARIES))
-        wrapper.setAttribute('transform',
-            'translate(' + (-x  * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ')'+
-            'scale(' + this.settings.SYMBOL_SCALE + ') ' +
-            this.symbols.getRotation(x, y)
-        )
+        // wrapper.style.transformOrigin = 'center'
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
         node.setAttribute('d', symbol.path)
-        node.setAttribute('stroke-linecap', 'round')
-        node.setAttribute('stroke-linejoin', 'round')
+        const
+            cx = symbol.shift.x + x,
+            cy = symbol.shift.y + y
+
+        node.style.transformOrigin = `${cx}px ${cy}px`
+        node.setAttribute('transform', `scale(${this.settings.SYMBOL_SCALE})`)
         this.setSignColor(node, color)
         wrapper.appendChild(node)
+
+        wrapper.setAttribute('transform',
+            this.symbols.getRotation(x, y)
+        )
+
         return wrapper
     }
     /*
