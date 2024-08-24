@@ -217,7 +217,7 @@ class Symbols {
                     y1: 46,
                     x2: 551,
                     y2: 140,
-                    angle: 18
+                    angle: 15
                 },
                 { // sector 2
                     x1 : 570,
@@ -252,14 +252,14 @@ class Symbols {
                     y1 : 683,
                     x2 : 573,
                     y2 : 757,
-                    angle: -18
+                    angle: -15
                 },
                 { // sector 7
                     x1 : 230,
                     y1 : 607,
                     x2 : 402,
                     y2 : 815,
-                    angle: 18
+                    angle: 15
                 },
                 { // sector 8
                     x1 : 94,
@@ -294,7 +294,7 @@ class Symbols {
                     y1 : 46,
                     x2 : 382,
                     y2 : 140,
-                    angle: -15.5
+                    angle: -15
                 }
             ]
         }
