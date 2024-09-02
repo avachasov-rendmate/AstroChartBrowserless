@@ -1,6 +1,5 @@
 import type {Settings} from './settings'
 import Symbols from './symbols'
-import symbols from "./symbols";
 
 /**
  * SVG tools.
@@ -26,7 +25,7 @@ class SVG {
     constructor(document: any, elementId: string, width: number, height: number, settings: Settings) {
         this.settings = settings
         this.document = document
-        this.symbols = new Symbols(this.settings)
+        this.symbols = new Symbols(this.settings, width, height)
 
         const rootElement = this.document.getElementById(elementId)
         if (rootElement == null) throw new Error('Root element not found')
@@ -50,16 +49,13 @@ class SVG {
             const
                 defs = this.document.createElementNS(svg.namespaceURI, 'defs'),
                 gradientDefId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-                gradientMaskId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 gradientDef = this.document.createElementNS(svg.namespaceURI, `${this.settings.GRADIENT.type}Gradient`),
-                gradientMask = this.document.createElementNS(svg.namespaceURI, `${this.settings.GRADIENT.type}Gradient`),
                 start = this.document.createElementNS(svg.namespaceURI, 'stop'),
                 stop = this.document.createElementNS(svg.namespaceURI, 'stop')
 
             gradientDef.setAttribute('id', gradientDefId)
             gradientDef.setAttribute('gradientUnits', 'userSpaceOnUse')
 
-            // x1="0" y1="0" x2="200" y2="200"
             gradientDef.setAttribute('x1', 0)
             gradientDef.setAttribute('y1', 0)
             gradientDef.setAttribute('x2', width)
@@ -75,16 +71,7 @@ class SVG {
             stop.setAttribute('stop-opacity', '1')
             gradientDef.appendChild(start)
             gradientDef.appendChild(stop)
-
-            // gradientMask.setAttribute('id', gradientMaskId)
-            // gradientMask.setAttribute('xlink:href', `#${gradientDefId}`)
-            // gradientMask.setAttribute('gradientUnits', 'userSpaceOnUse')
-            //
-            // gradientDef.appendChild(start)
-            // gradientDef.appendChild(stop)
-
             defs.appendChild(gradientDef)
-            // defs.appendChild(gradientMask)
             svg.appendChild(defs)
             wrapper.setAttribute('style', `fill:url('#${gradientDefId}');fill-opacity:1; stroke:url('#${gradientDefId}')`)
         }
@@ -237,17 +224,6 @@ class SVG {
     }
 
     /**
-     * Get ID for sign wrapper.
-     *
-     * @param {String} sign
-     *
-     * @return {String id}
-     */
-    getSignWrapperId(sign: string): string {
-        return this._paperElementId + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_SIGNS + '-' + sign
-    }
-
-    /**
      * Get ID for house wrapper.
      *
      * @param {String} house
@@ -288,6 +264,44 @@ class SVG {
         node.setAttribute('stroke-width', (this.settings.NUMBER_STROKE * this.settings.SYMBOL_SCALE).toString())
     }
 
+    setTransforms(node: Element, x: number, y: number, scale: number, autoRotateDisabled? : boolean): any {
+        let
+            rotation = { transform: '' , source: 'path' }
+        if (!autoRotateDisabled) {
+            rotation = this.symbols.getRotation(x, y)
+        }
+        node.setAttribute('style', `
+            transform: scale(${scale}) ${rotation.transform};
+            transform-origin: ${x}px ${y}px;
+        `)
+        return rotation
+    }
+    addPlanetSymbol(x: number, y: number, symbol: any): Element {
+        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
+        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
+        node.setAttribute('d', symbol.path)
+        this.setTransforms(
+            wrapper,
+            x,
+            y,
+            this.settings.SCALE_PLANETS,
+            true //disable auto rotation
+        )
+        this.setPointColor(node)
+        wrapper.appendChild(node)
+        return wrapper
+    }
+
+    addZodiacSymbol(x: number, y: number, symbol: any, color: string): Element {
+        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
+        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
+        const
+            transforms = this.setTransforms(wrapper, x, y, this.settings.SCALE_ZODIAC_SIGNS)
+        node.setAttribute('d', symbol[transforms.source])
+        this.setSignColor(node, color)
+        wrapper.appendChild(node)
+        return wrapper
+    }
     /*
      * Sun path
      * @private
@@ -298,39 +312,28 @@ class SVG {
      * @return {SVG g}
      */
     sun(x: number, y: number): Element {
-        // center symbol
-        const xShift = -1 // px
-        const yShift = -8 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -2.18182,0.727268 -2.181819,1.454543 -1.454552,2.18182 -0.727268,2.181819 0,2.181819 0.727268,2.181819 1.454552,2.18182 2.181819,1.454544 2.18182,0.727276 2.18181,0 2.18182,-0.727276 2.181819,-1.454544 1.454552,-2.18182 0.727268,-2.181819 0,-2.181819 -0.727268,-2.181819 -1.454552,-2.18182 -2.181819,-1.454543 -2.18182,-0.727268 -2.18181,0 m 0.727267,6.54545 -0.727267,0.727276 0,0.727275 0.727267,0.727268 0.727276,0 0.727267,-0.727268 0,-0.727275 -0.727267,-0.727276 -0.727276,0 m 0,0.727276 0,0.727275 0.727276,0 0,-0.727275 -0.727276,0')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'sun'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     sirius(x: number, y: number): Element { // todo: implement when designer will draw icon
         // center symbol
-        const xShift = -1 // px
-        const yShift = -8 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + '')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'sirius'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -343,21 +346,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     moon(x: number, y: number): Element {
-        // center symbol
-        const xShift = -2 // px
-        const yShift = -7 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' a 7.4969283,7.4969283 0 0 1 0,14.327462 7.4969283,7.4969283 0 1 0 0,-14.327462 z')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'moon'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -370,28 +367,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     mercury(x: number, y: number): Element {
-        // center symbol
-        const xShift = -2 // px
-        const yShift = 7 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const body = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        body.setAttribute('d', 'm' + x + ', ' + y + ' 4.26011,0 m -2.13005,-2.98207 0,5.11213 m 4.70312,-9.7983 a 4.70315,4.70315 0 0 1 -4.70315,4.70314 4.70315,4.70315 0 0 1 -4.70314,-4.70314 4.70315,4.70315 0 0 1 4.70314,-4.70315 4.70315,4.70315 0 0 1 4.70315,4.70315 z')
-        this.setPointColor(body)
-        wrapper.appendChild(body)
-
-        const crownXShift = 6 // px
-        const crownYShift = -16 // px
-        const crown = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        crown.setAttribute('d', 'm' + (x + crownXShift) + ', ' + (y + crownYShift) + ' a 3.9717855,3.9717855 0 0 1 -3.95541,3.59054 3.9717855,3.9717855 0 0 1 -3.95185,-3.59445')
-        this.setPointColor(crown)
-        wrapper.appendChild(crown)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'mercury'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -404,21 +388,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     venus(x: number, y: number): Element {
-        // center symbol
-        const xShift = 2 // px
-        const yShift = 7 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -4.937669,0.03973 m 2.448972,2.364607 0,-5.79014 c -3.109546,-0.0085 -5.624617,-2.534212 -5.620187,-5.64208 0.0044,-3.107706 2.526514,-5.621689 5.635582,-5.621689 3.109068,0 5.631152,2.513983 5.635582,5.621689 0.0044,3.107868 -2.510641,5.633586 -5.620187,5.64208')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'venus'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -431,21 +409,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     mars(x: number, y: number): Element {
-        // center symbol
-        const xShift = 2 // px
-        const yShift = -2 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' c -5.247438,-4.150623 -11.6993,3.205518 -7.018807,7.886007 4.680494,4.680488 12.036628,-1.771382 7.885999,-7.018816 z m 0,0 0.433597,0.433595 3.996566,-4.217419 m -3.239802,-0.05521 3.295015,0 0.110427,3.681507')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'mars'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -458,23 +430,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     jupiter(x: number, y: number): Element {
-        // center symbol
-        const xShift = -5 // px
-        const yShift = -2 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' c -0.43473,0 -1.30422,-0.40572 -1.30422,-2.02857 0,-1.62285 1.73897,-3.2457 3.47792,-3.2457 1.73897,0 3.47792,1.21715 3.47792,4.05713 0,2.83999 -2.1737,7.30283 -6.52108,7.30283 m 12.17269,0 -12.60745,0 m 9.99902,-11.76567 0,15.82279')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 3))
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'jupiter'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -487,21 +451,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     saturn(x: number, y: number): Element {
-        // center symbol
-        const xShift = 5 // px
-        const yShift = 10 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' c -0.52222,0.52221 -1.04445,1.04444 -1.56666,1.04444 -0.52222,0 -1.56667,-0.52223 -1.56667,-1.56667 0,-1.04443 0.52223,-2.08887 1.56667,-3.13332 1.04444,-1.04443 2.08888,-3.13331 2.08888,-5.22219 0,-2.08888 -1.04444,-4.17776 -3.13332,-4.17776 -1.97566,0 -3.65555,1.04444 -4.69998,3.13333 m -2.55515,-5.87499 6.26664,0 m -3.71149,-2.48054 0,15.14438')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'saturn'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -514,30 +472,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     uranus(x: number, y: number): Element {
-        // center symbol
-        const xShift = -5 // px
-        const yShift = -7 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const horns = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        horns.setAttribute('d', 'm' + x + ', ' + y + '  0,10.23824 m 10.23633,-10.32764 0,10.23824 m -10.26606,-4.6394 10.23085,0 m -5.06415,-5.51532 0,11.94985')
-        this.setPointColor(horns)
-        wrapper.appendChild(horns)
-
-        const bodyXShift = 7 // px
-        const bodyYShift = 14.5 // px
-        const body = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        body.setAttribute('d', 'm' + (x + bodyXShift) + ', ' + (y + bodyYShift) + ' a 1.8384377,1.8384377 0 0 1 -1.83844,1.83843 1.8384377,1.8384377 0 0 1 -1.83842,-1.83843 1.8384377,1.8384377 0 0 1 1.83842,-1.83844 1.8384377,1.8384377 0 0 1 1.83844,1.83844 z')
-        this.setPointColor(body)
-        wrapper.appendChild(body)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'uranus'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -550,21 +493,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     neptune(x: number, y: number): Element {
-        // center symbol
-        const xShift = 3 // px
-        const yShift = -5 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' 1.77059,-2.36312 2.31872,1.8045 m -14.44264,-0.20006 2.34113,-1.77418 1.74085,2.38595 m -1.80013,-1.77265 c -1.23776,8.40975 0.82518,9.67121 4.95106,9.67121 4.12589,0 6.18883,-1.26146 4.95107,-9.67121 m -7.05334,3.17005 2.03997,-2.12559 2.08565,2.07903 m -5.32406,9.91162 6.60142,0 m -3.30071,-12.19414 0,15.55803')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'neptune'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -577,28 +514,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     pluto(x: number, y: number): Element {
-        // center symbol
-        const xShift = 5 // px
-        const yShift = -5 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const body = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        body.setAttribute('d', 'm' + x + ', ' + y + ' a 5.7676856,5.7676856 0 0 1 -2.88385,4.99496 5.7676856,5.7676856 0 0 1 -5.76768,0 5.7676856,5.7676856 0 0 1 -2.88385,-4.99496 m 5.76771,13.93858 0,-8.17088 m -3.84512,4.32576 7.69024,0')
-        this.setPointColor(body)
-        wrapper.appendChild(body)
-
-        const headXShift = -2.3 // px
-        const headYShift = 0 // px
-        const head = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        head.setAttribute('d', 'm' + (x + headXShift) + ', ' + (y + headYShift) + ' a 3.3644834,3.3644834 0 0 1 -3.36448,3.36449 3.3644834,3.3644834 0 0 1 -3.36448,-3.36449 3.3644834,3.3644834 0 0 1 3.36448,-3.36448 3.3644834,3.3644834 0 0 1 3.36448,3.36448 z')
-        this.setPointColor(head)
-        wrapper.appendChild(head)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'pluto'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -611,28 +535,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     chiron(x: number, y: number): Element {
-        // center symbol
-        const xShift = 3 // px
-        const yShift = 5 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const body = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        body.setAttribute('d', 'm' + x + ', ' + y + ' a 3.8764725,3.0675249 0 0 1 -3.876473,3.067525 3.8764725,3.0675249 0 0 1 -3.876472,-3.067525 3.8764725,3.0675249 0 0 1 3.876472,-3.067525 3.8764725,3.0675249 0 0 1 3.876473,3.067525 z')
-        this.setPointColor(body)
-        wrapper.appendChild(body)
-
-        const headXShift = 0 // px
-        const headYShift = -13 // px
-        const head = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        head.setAttribute('d', 'm' + (x + headXShift) + ', ' + (y + headYShift) + '   -3.942997,4.243844 4.110849,3.656151 m -4.867569,-9.009468 0,11.727251')
-        this.setPointColor(head)
-        wrapper.appendChild(head)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'chiron'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -645,21 +556,15 @@ class SVG {
    * @return {SVGPathElement} path
    */
     lilith(x: number, y: number): Element {
-        // center symbol
-        const xShift = 2 // px
-        const yShift = 4 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', 'm' + x + ', ' + y + ' -2.525435,-1.12853 -1.464752,-1.79539 -0.808138,-2.20576 0.151526,-2.05188 0.909156,-1.5389 1.010173,-1.02593 0.909157,-0.56427 1.363735,-0.61556 m 2.315327,-0.39055 -1.716301,0.54716 -1.7163,1.09431 -1.1442,1.64146 -0.572102,1.64146 0,1.64146 0.572102,1.64147 1.1442,1.64145 1.7163,1.09432 1.716301,0.54715 m 0,-11.49024 -2.2884,0 -2.288401,0.54716 -1.716302,1.09431 -1.144201,1.64146 -0.5721,1.64146 0,1.64146 0.5721,1.64147 1.144201,1.64145 1.716302,1.09432 2.288401,0.54715 2.2884,0 m -4.36712,-0.4752 0,6.44307 m -2.709107,-3.41101 5.616025,0')
-        this.setPointColor(node)
-        wrapper.appendChild(node)
-
-        return wrapper
+        const
+            symbol = this.symbols.getSymbol(
+                x,
+                y,
+                'planets',
+                'default',
+                'lilith'
+            )
+        return this.addPlanetSymbol(x, y, symbol)
     }
 
     /*
@@ -751,26 +656,6 @@ class SVG {
         this.setPointColor(fortuneGroup)
         wrapper.appendChild(fortuneGroup)
 
-
-        return wrapper
-    }
-    addZodiacSymbol(x: number, y: number, symbol: any, color: string): Element {
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        // wrapper.style.transformOrigin = 'center'
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        const
-            cx = symbol.shift.x + x,
-            cy = symbol.shift.y + y
-
-        node.style.transformOrigin = `${cx}px ${cy}px`
-        node.setAttribute('transform', `scale(${this.settings.SYMBOL_SCALE})`)
-        this.setSignColor(node, color)
-        wrapper.appendChild(node)
-
-        wrapper.setAttribute('transform',
-            this.symbols.getRotation(x, y)
-        )
 
         return wrapper
     }

@@ -44,14 +44,6 @@ declare class SVG {
      */
     createRectForClick(x: number, y: number): Element;
     /**
-     * Get ID for sign wrapper.
-     *
-     * @param {String} sign
-     *
-     * @return {String id}
-     */
-    getSignWrapperId(sign: string): string;
-    /**
      * Get ID for house wrapper.
      *
      * @param {String} house
@@ -63,6 +55,9 @@ declare class SVG {
     setSignColor(node: Element, color: string): void;
     setAxisColor(node: Element): void;
     setNumberColor(node: Element): void;
+    setTransforms(node: Element, x: number, y: number, scale: number, autoRotateDisabled?: boolean): any;
+    addPlanetSymbol(x: number, y: number, symbol: any): Element;
+    addZodiacSymbol(x: number, y: number, symbol: any, color: string): Element;
     sun(x: number, y: number): Element;
     sirius(x: number, y: number): Element;
     moon(x: number, y: number): Element;
@@ -79,7 +74,6 @@ declare class SVG {
     nnode(x: number, y: number): Element;
     snode(x: number, y: number): Element;
     fortune(x: number, y: number): Element;
-    addZodiacSymbol(x: number, y: number, symbol: any, color: string): Element;
     aries(x: number, y: number, color: string): Element;
     taurus(x: number, y: number, color: string): Element;
     gemini(x: number, y: number, color: string): Element;

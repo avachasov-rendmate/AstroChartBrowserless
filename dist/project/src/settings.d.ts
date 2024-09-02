@@ -22,6 +22,8 @@ export interface Settings {
     showGradient: boolean;
     GRADIENT: Gradient;
     SYMBOL_SCALE: number;
+    SCALE_PLANETS: number;
+    SCALE_ZODIAC_SIGNS: number;
     COLOR_BACKGROUND: string;
     COLOR_POINTS: string;
     POINTS_TEXT_SIZE: number;
