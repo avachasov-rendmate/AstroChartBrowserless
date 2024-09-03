@@ -34,6 +34,7 @@ export interface Settings {
     POINTS_TEXT_SIZE: number
     POINTS_STROKE: number
     SIGNS_STROKE: number
+    CUSPS_STROKE_INNER: number
     MARGIN: number
     PADDING: number
     ID_CHART: string
@@ -309,6 +310,7 @@ const settings: Settings = {
 
     // Cusps strength of lines
     CUSPS_STROKE: 1,
+    CUSPS_STROKE_INNER: 1,
     COLOR_NUMBERS: '#000',
     COLOR_SIGN_DARK: '#f0f0f0',
     COLOR_SIGN_LIGHT: '#838080',
@@ -344,7 +346,7 @@ const settings: Settings = {
 
     // Planets collision circle radius for SYMBOL_SCALE : 1
     // Scaling changes the collision radius
-    COLLISION_RADIUS: 10, // px
+    COLLISION_RADIUS: 20, // px
 
     // Aspects
     ASPECTS: {

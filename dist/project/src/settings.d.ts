@@ -29,6 +29,7 @@ export interface Settings {
     POINTS_TEXT_SIZE: number;
     POINTS_STROKE: number;
     SIGNS_STROKE: number;
+    CUSPS_STROKE_INNER: number;
     MARGIN: number;
     PADDING: number;
     ID_CHART: string;

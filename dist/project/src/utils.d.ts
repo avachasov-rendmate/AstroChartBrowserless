@@ -126,7 +126,7 @@ interface InitialEndPosition {
  *
  * @return {Array<any>} [{startX:1, startY:1, endX:4, endY:4}, {startX:6, startY:6, endX:8, endY:8}]
  */
-export declare const getDashedLinesPositions: (centerX: number, centerY: number, angle: number, lineStartRadius: number, lineEndRadius: number, obstacleRadius: number, obstacles: LocatedPoint[], astrology: Settings) => InitialEndPosition[];
+export declare const getDashedLinesPositions: (centerX: number, centerY: number, angle: number, lineStartRadius: number, lineEndRadius: number, obstacleRadius: number, obstacles: LocatedPoint[], astrology: Settings, ignoreCollision?: boolean) => InitialEndPosition[];
 /**
  * Calculate ruler positions.
  *

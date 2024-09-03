@@ -295,12 +295,22 @@ interface InitialEndPosition {
  *
  * @return {Array<any>} [{startX:1, startY:1, endX:4, endY:4}, {startX:6, startY:6, endX:8, endY:8}]
  */
-export const getDashedLinesPositions = (centerX: number, centerY: number, angle: number, lineStartRadius: number, lineEndRadius: number, obstacleRadius: number, obstacles: LocatedPoint[], astrology: Settings): InitialEndPosition[] => {
+export const getDashedLinesPositions = (
+    centerX: number,
+    centerY: number,
+    angle: number,
+    lineStartRadius: number,
+    lineEndRadius: number,
+    obstacleRadius: number,
+    obstacles: LocatedPoint[],
+    astrology: Settings,
+    ignoreCollision?: boolean
+): InitialEndPosition[] => {
     let startPos
     let endPos
     const result = []
 
-    if (isInCollision(angle, obstacles, astrology)) {
+    if (isInCollision(angle, obstacles, astrology) && !ignoreCollision) {
         startPos = getPointPosition(centerX, centerY, lineStartRadius, angle, astrology)
         endPos = getPointPosition(centerX, centerY, obstacleRadius - (astrology.COLLISION_RADIUS * astrology.SYMBOL_SCALE), angle, astrology)
         result.push({startX: startPos.x, startY: startPos.y, endX: endPos.x, endY: endPos.y})

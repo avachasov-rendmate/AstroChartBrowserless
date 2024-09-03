@@ -238,7 +238,7 @@ class Radix {
             }
 
             // draw symbol
-            const symbol = this.paper.getSymbol(point.name, point.x, point.y)
+            const symbol = this.paper.getSymbol(point.name, point.x, point.y, this.settings.COLOR_POINTS)
             symbol.setAttribute('id', this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_POINTS + '-' + point.name)
             wrapper.appendChild(symbol)
 
@@ -338,7 +338,13 @@ class Radix {
             return
         }
 
-        let lines
+        let lines,
+            linesSolid,
+            linesStartRadius = this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO
+        const
+            linesEndRadius = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.rulerRadius),
+            linesSolidStartRadius = this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO,
+            linesSolidEndRadius = this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO + this.settings.OFFSET_CENTER_OUTER_CIRCLE * this.settings.SYMBOL_SCALE
         const universe = this.universe
         const wrapper = getEmptyWrapper(this.document, universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_CUSPS, this.paper.root.id)
 
@@ -353,12 +359,17 @@ class Radix {
         // Cusps
         for (let i = 0, ln = this.data.cusps.length; i < ln; i++) {
             // Draws a dashed line when an point is in the way
+
+            if (this.settings.showCentralOuterCircle) {
+                linesStartRadius = this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO + this.settings.OFFSET_CENTER_OUTER_CIRCLE * this.settings.SYMBOL_SCALE
+            }
+
             lines = getDashedLinesPositions(
                 this.cx,
                 this.cy,
                 this.data.cusps[i] + this.shift,
-                this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO,
-                this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.rulerRadius),
+                linesStartRadius,
+                linesEndRadius,
                 this.pointRadius,
                 this.locatedPoints,
                 this.settings
@@ -386,6 +397,33 @@ class Radix {
 
                 wrapper.appendChild(newLine)
             }, this)
+
+
+            if (this.settings.showCentralOuterCircle) {
+                linesSolid = getDashedLinesPositions(
+                    this.cx,
+                    this.cy,
+                    this.data.cusps[i] + this.shift,
+                    linesSolidStartRadius,
+                    linesSolidEndRadius,
+                    this.pointRadius,
+                    this.locatedPoints,
+                    this.settings,
+                    true
+                )
+
+                linesSolid.forEach(function (line) {
+                    const newLine = this.paper.line(line.startX, line.startY, line.endX, line.endY)
+                    if (this.settings.showGradient) {
+                        newLine.setAttribute('fill', 'none')
+                    } else {
+                        newLine.setAttribute('stroke', this.settings.COLOR_LINES)
+                    }
+                    newLine.setAttribute('stroke-width', this.settings.CUSPS_STROKE_INNER)
+                    wrapper.appendChild(newLine)
+                }, this)
+            }
+
 
             // Cup number
             const deg360 = radiansToDegree(2 * Math.PI)
