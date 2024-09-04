@@ -295,7 +295,7 @@ class SVG {
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
         const
-            transforms = this.setTransforms(wrapper, x, y, this.settings.SCALE_ZODIAC_SIGNS)
+            transforms = this.setTransforms(wrapper, x, y, this.settings.SCALE_ZODIAC_SIGNS + symbol.extraScale)
         node.setAttribute('d', symbol[transforms.source])
         this.setSignColor(node, color)
         wrapper.appendChild(node)
