@@ -20,10 +20,12 @@ export interface Settings {
     showBackground: boolean;
     showAxis: boolean;
     showGradient: boolean;
+    forceZodiacSignColorA: boolean;
     GRADIENT: Gradient;
     SYMBOL_SCALE: number;
     SCALE_PLANETS: number;
     SCALE_ZODIAC_SIGNS: number;
+    SCALE_NUMBERS: number;
     COLOR_BACKGROUND: string;
     COLOR_POINTS: string;
     POINTS_TEXT_SIZE: number;
@@ -143,6 +145,7 @@ export interface Settings {
     OFFSET_CENTER_OUTER_CIRCLE: number;
     OFFSET_NUMBERS: number;
     STROKE_ASPECTS: number;
+    SIGNS_ICONS_STROKE: number;
     BG_PADDING: number;
     signsDiskStrokeOnly: boolean;
     COLOR_ASPECTS: string;

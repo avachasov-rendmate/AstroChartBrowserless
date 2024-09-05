@@ -25,10 +25,12 @@ export interface Settings {
     showBackground: boolean
     showAxis: boolean
     showGradient: boolean
+    forceZodiacSignColorA: boolean
     GRADIENT: Gradient
     SYMBOL_SCALE: number
     SCALE_PLANETS: number
     SCALE_ZODIAC_SIGNS: number
+    SCALE_NUMBERS: number
     COLOR_BACKGROUND: string
     COLOR_POINTS: string
     POINTS_TEXT_SIZE: number
@@ -148,6 +150,7 @@ export interface Settings {
     OFFSET_CENTER_OUTER_CIRCLE: number
     OFFSET_NUMBERS: number
     STROKE_ASPECTS: number
+    SIGNS_ICONS_STROKE: number
     BG_PADDING: number
     signsDiskStrokeOnly: boolean
     COLOR_ASPECTS: string
@@ -157,9 +160,10 @@ export interface Settings {
 const settings: Settings = {
     COLOR_ASPECTS: '#333',
     ASPECT_POINT_SCALE: 0.5,
+    SCALE_NUMBERS: 1,
     signsDiskStrokeOnly: false,
     STROKE_ASPECTS: 1,
-    STYLE_DIGITS: 'arabic',
+    STYLE_DIGITS: 'roman',
     CIRCLE_DASHARRAY_CENTRAL_OUTER: '0',
     CIRCLE_DASHARRAY_RULER: '0',
     SIGN_BG_STROKE: 1,
@@ -212,6 +216,7 @@ const settings: Settings = {
 
     // Signs strength of lines
     SIGNS_STROKE: 1.5,
+    SIGNS_ICONS_STROKE: 1.5,
 
     // Chart margin
     MARGIN: 50, // px
@@ -293,6 +298,7 @@ const settings: Settings = {
 
     COLOR_AXIS_FONT: '#333',
     SYMBOL_AXIS_STROKE: 1.6,
+    forceZodiacSignColorA: false,
 
     // Cusps
     SYMBOL_CUSP_1: '1',

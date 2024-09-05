@@ -202,27 +202,6 @@ class SVG {
 
         return symbol
     }
-
-    /**
-     * Create transparent rectangle.
-     *
-     * Used to improve area click, @see this.settings.ADD_CLICK_AREA
-     *
-     * @param {Number} x
-     * @param {Number} y
-     *
-     * @return {Element} rect
-     */
-    createRectForClick(x: number, y: number): Element {
-        const rect = this.document.createElementNS(this.context.root.namespaceURI, 'rect')
-        rect.setAttribute('x', (x - this.settings.SIGNS_STROKE).toString())
-        rect.setAttribute('y', (y - this.settings.SIGNS_STROKE).toString())
-        rect.setAttribute('width', '20px')
-        rect.setAttribute('height', '20px')
-        rect.setAttribute('fill', 'transparent')
-        return rect
-    }
-
     /**
      * Get ID for house wrapper.
      *
@@ -247,7 +226,11 @@ class SVG {
             node.setAttribute('stroke', color)
             node.setAttribute('fill', color)
         }
-        node.setAttribute('stroke-width', this.settings.SIGNS_STROKE.toString())
+        if (this.settings.STYLE_ZODIAC_SIGNS.toLowerCase() === 'text') {
+            node.setAttribute('stroke-width', this.settings.SIGNS_STROKE.toString())
+        } else {
+            node.setAttribute('stroke-width', this.settings.SIGNS_ICONS_STROKE.toString())
+        }
     }
     setAxisColor(node: Element): void {
         if (!this.settings.showGradient) {
@@ -298,6 +281,21 @@ class SVG {
             transforms = this.setTransforms(wrapper, x, y, this.settings.SCALE_ZODIAC_SIGNS + symbol.extraScale)
         node.setAttribute('d', symbol[transforms.source])
         this.setSignColor(node, color)
+        wrapper.appendChild(node)
+        return wrapper
+    }
+    addNumberSymbol(x: number, y: number, symbol: any, color: string): Element {
+        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
+        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
+        this.setTransforms(
+            wrapper,
+            x,
+            y,
+            this.settings.SCALE_NUMBERS,
+            true //disable auto rotation
+        )
+        node.setAttribute('d', symbol.path)
+        this.setNumberColor(node)
         wrapper.appendChild(node)
         return wrapper
     }
@@ -986,18 +984,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '1'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_1))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number2(x: number, y: number): Element {
@@ -1009,18 +996,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '2'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_2))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number3(x: number, y: number): Element {
@@ -1032,18 +1008,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '3'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_3))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number4(x: number, y: number): Element {
@@ -1055,17 +1020,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '4'
             )
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_4))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number5(x: number, y: number): Element {
@@ -1077,18 +1032,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '5'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_5))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number6(x: number, y: number): Element {
@@ -1100,18 +1044,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '6'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_6))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number7(x: number, y: number): Element {
@@ -1123,18 +1056,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '7'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_7))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number8(x: number, y: number): Element {
@@ -1146,18 +1068,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '8'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_8))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number9(x: number, y: number): Element {
@@ -1169,18 +1080,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '9'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_9))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number10(x: number, y: number): Element {
@@ -1192,18 +1092,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '10'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_9))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number11(x: number, y: number): Element {
@@ -1215,18 +1104,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '11'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_9))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     number12(x: number, y: number): Element {
@@ -1238,18 +1116,7 @@ class SVG {
                 this.settings.STYLE_DIGITS,
                 '12'
             )
-
-        const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('id', this.getHouseIdWrapper(this.settings.SYMBOL_CUSP_9))
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
-
-        const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
-        node.setAttribute('d', symbol.path)
-        this.setNumberColor(node)
-        wrapper.appendChild(node)
-
-        if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
-        return wrapper
+        return this.addNumberSymbol(x, y, symbol, this.settings.COLOR_NUMBERS)
     }
 
     /**

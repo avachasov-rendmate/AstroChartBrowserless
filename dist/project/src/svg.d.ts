@@ -33,17 +33,6 @@ declare class SVG {
      */
     getSymbol(name: string, x: number, y: number, color?: string): Element;
     /**
-     * Create transparent rectangle.
-     *
-     * Used to improve area click, @see this.settings.ADD_CLICK_AREA
-     *
-     * @param {Number} x
-     * @param {Number} y
-     *
-     * @return {Element} rect
-     */
-    createRectForClick(x: number, y: number): Element;
-    /**
      * Get ID for house wrapper.
      *
      * @param {String} house
@@ -58,6 +47,7 @@ declare class SVG {
     setTransforms(node: Element, x: number, y: number, scale: number, autoRotateDisabled?: boolean): any;
     addPlanetSymbol(x: number, y: number, symbol: any, color: string): Element;
     addZodiacSymbol(x: number, y: number, symbol: any, color: string): Element;
+    addNumberSymbol(x: number, y: number, symbol: any, color: string): Element;
     sun(x: number, y: number, color: string): Element;
     sirius(x: number, y: number, color: string): Element;
     moon(x: number, y: number, color: string): Element;

@@ -162,7 +162,12 @@ class Radix {
         // signs
         for (let i = 0, step = 30, start = 15 + this.shift, len = this.settings.SYMBOL_SIGNS.length; i < len; i++) {
             const position = getPointPosition(this.cx, this.cy, this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO) / 2, start, this.settings)
-            const symbolColor = i % 2 ? this.settings.COLOR_SIGN_LIGHT : this.settings.COLOR_SIGN_DARK
+            let symbolColor: string
+            if (this.settings.forceZodiacSignColorA) {
+                symbolColor = this.settings.COLOR_SIGN_LIGHT
+            } else {
+                symbolColor = i % 2 ? this.settings.COLOR_SIGN_LIGHT : this.settings.COLOR_SIGN_DARK
+            }
             wrapper.appendChild(this.paper.getSymbol(this.settings.SYMBOL_SIGNS[i], position.x, position.y, symbolColor))
             start += step
         }
