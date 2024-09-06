@@ -302,7 +302,7 @@ class Radix {
             } else {
                 overlapLine.setAttribute('stroke', this.settings.COLOR_LINES)
             }
-            overlapLine.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE))
+            overlapLine.setAttribute('stroke-width', this.settings.CUSPS_STROKE)
             wrapper.appendChild(overlapLine)
 
             // As
@@ -387,17 +387,23 @@ class Radix {
                 } else {
                     newLine.setAttribute('stroke', this.settings.COLOR_LINES)
                 }
-
-                newLine.setAttribute('stroke-dasharray', this.settings.CUSPS_DASHARRAY)
-                newLine.setAttribute('stroke-linecap', 'round')
-                newLine.setAttribute('shape-rendering', 'geometricPrecision')
-                newLine.setAttribute('stroke-dashoffset', '5')
-                newLine.setAttribute('vector-effect', 'non-scaling-stroke')
-
                 if (mainAxis.includes(i)) {
-                    newLine.setAttribute('stroke-width', this.settings.CUSPS_STROKE)
+                    switch (this.settings.houseSystem) {
+                        case 'whole-sign':
+                        case 'equal-house': {
+                            newLine.setAttribute('stroke-dasharray', this.settings.CUSPS_DASHARRAY)
+                            newLine.setAttribute('stroke-width', this.settings.CUSPS_STROKE)
+                            break
+                        }
+                        default: {
+                            newLine.setAttribute('stroke-dasharray', this.settings.AXIS_DASHARRAY)
+                            newLine.setAttribute('stroke-width', this.settings.AXIS_STROKE)
+                            break
+                        }
+                    }
                 } else {
                     newLine.setAttribute('stroke-width', this.settings.CUSPS_STROKE)
+                    newLine.setAttribute('stroke-dasharray', this.settings.CUSPS_DASHARRAY)
                 }
 
                 wrapper.appendChild(newLine)
@@ -465,15 +471,18 @@ class Radix {
 
                 if (this.settings.showAspectPoints) {
                     const
-                        circleStart = this.paper.circle(startPoint.x, startPoint.y, this.settings.STROKE_ASPECTS * this.settings.ASPECT_POINT_SCALE),
-                        circleEnd = this.paper.circle(endPoint.x, endPoint.y, this.settings.STROKE_ASPECTS * this.settings.ASPECT_POINT_SCALE)
-                    if (this.settings.showGradient) {
-                        circleStart.setAttribute('fill', 'none')
-                        circleEnd.setAttribute('fill', 'none')
-                    } else {
-                        circleStart.setAttribute('fill', this.settings.COLOR_ASPECTS)
-                        circleEnd.setAttribute('fill', this.settings.COLOR_ASPECTS)
+                        radius = this.settings.STROKE_ASPECTS * this.settings.ASPECT_POINT_SCALE,
+                        circleStart = this.paper.circle(startPoint.x, startPoint.y, 0.01),
+                        circleEnd = this.paper.circle(endPoint.x, endPoint.y,0.01)
+
+                    if (!this.settings.showGradient) {
+                        circleStart.setAttribute('stroke', this.settings.COLOR_ASPECTS)
+                        circleEnd.setAttribute('stroke', this.settings.COLOR_ASPECTS)
                     }
+
+                    circleStart.setAttribute('stroke-width', radius.toString())
+                    circleEnd.setAttribute('stroke-width', radius.toString())
+
                     wrapper.appendChild(circleStart)
                     wrapper.appendChild(circleEnd)
                 }
