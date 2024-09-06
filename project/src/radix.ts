@@ -471,18 +471,24 @@ class Radix {
 
                 if (this.settings.showAspectPoints) {
                     const
-                        radius = this.settings.STROKE_ASPECTS * this.settings.ASPECT_POINT_SCALE,
-                        circleStart = this.paper.circle(startPoint.x, startPoint.y, 0.01),
-                        circleEnd = this.paper.circle(endPoint.x, endPoint.y,0.01)
+                        circleStart = this.document.createElementNS(this.paper.root.namespaceURI, 'path'),
+                        circleEnd = this.document.createElementNS(this.paper.root.namespaceURI, 'path')
+
+                    circleStart.setAttribute('d',`m${startPoint.x},${startPoint.y}m -1,0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0`)
+                    circleEnd.setAttribute('d',`m${endPoint.x},${endPoint.y}m -1,0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0`)
+
+                    circleStart.setAttribute('transform-origin', `${startPoint.x}px ${startPoint.y}px`)
+                    circleStart.setAttribute('transform', `scale(${this.settings.ASPECT_POINT_SCALE})`)
+                    circleEnd.setAttribute('transform-origin', `${endPoint.x}px ${endPoint.y}px`)
+                    circleEnd.setAttribute('transform', `scale(${this.settings.ASPECT_POINT_SCALE})`)
 
                     if (!this.settings.showGradient) {
-                        circleStart.setAttribute('stroke', this.settings.COLOR_ASPECTS)
-                        circleEnd.setAttribute('stroke', this.settings.COLOR_ASPECTS)
+                        circleStart.setAttribute('fill', this.settings.COLOR_ASPECTS)
+                        circleEnd.setAttribute('fill', this.settings.COLOR_ASPECTS)
+                    } else {
+                        circleStart.setAttribute('stroke', 'transparent')
+                        circleEnd.setAttribute('stroke', 'transparent')
                     }
-
-                    circleStart.setAttribute('stroke-width', radius.toString())
-                    circleEnd.setAttribute('stroke-width', radius.toString())
-
                     wrapper.appendChild(circleStart)
                     wrapper.appendChild(circleEnd)
                 }
