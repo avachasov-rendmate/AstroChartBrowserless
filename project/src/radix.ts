@@ -477,10 +477,8 @@ class Radix {
                     circleStart.setAttribute('d',`m${startPoint.x},${startPoint.y}m -1,0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0`)
                     circleEnd.setAttribute('d',`m${endPoint.x},${endPoint.y}m -1,0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0`)
 
-                    circleStart.setAttribute('transform-origin', `${startPoint.x}px ${startPoint.y}px`)
-                    circleStart.setAttribute('transform', `scale(${this.settings.ASPECT_POINT_SCALE})`)
-                    circleEnd.setAttribute('transform-origin', `${endPoint.x}px ${endPoint.y}px`)
-                    circleEnd.setAttribute('transform', `scale(${this.settings.ASPECT_POINT_SCALE})`)
+                    circleStart.setAttribute('transform', `translate(${startPoint.x}, ${startPoint.y}) scale(${this.settings.ASPECT_POINT_SCALE}) translate(${-startPoint.x}, ${-startPoint.y})`)
+                    circleEnd.setAttribute('transform', `translate(${endPoint.x}, ${endPoint.y}) scale(${this.settings.ASPECT_POINT_SCALE}) translate(${-endPoint.x}, ${-endPoint.y})`)
 
                     if (!this.settings.showGradient) {
                         circleStart.setAttribute('fill', this.settings.COLOR_ASPECTS)

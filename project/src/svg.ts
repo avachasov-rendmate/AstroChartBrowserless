@@ -253,9 +253,20 @@ class SVG {
         if (!autoRotateDisabled) {
             rotation = this.symbols.getRotation(x, y)
         }
-        // node.setAttribute('transform', `scale(${scale}) ${rotation.transform}`)
-        // node.setAttribute('transform-origin', `${x}px ${y}px`)
-        node.setAttribute('style', `transform: scale(${scale}) ${rotation.transform}; transform-origin: ${x}px ${y}px`)
+        
+        let transformString = ''
+        
+        if (rotation.transform && rotation.transform.includes('rotate')) {
+            const angleMatch = rotation.transform.match(/rotate\(([^)]+)deg\)/)
+            if (angleMatch) {
+                const angle = parseFloat(angleMatch[1])
+                transformString = `translate(${x}, ${y}) rotate(${angle}) scale(${scale}) translate(${-x}, ${-y})`
+            }
+        } else {
+            transformString = `scale(${scale})`
+        }
+        
+        node.setAttribute('transform', transformString)
         return rotation
     }
     addPlanetSymbol(x: number, y: number, symbol: any, color: string): Element {
