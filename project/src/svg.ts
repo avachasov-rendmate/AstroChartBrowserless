@@ -263,7 +263,7 @@ class SVG {
                 transformString = `translate(${x}, ${y}) rotate(${angle}) scale(${scale}) translate(${-x}, ${-y})`
             }
         } else {
-            transformString = `scale(${scale})`
+            transformString = `translate(${x}, ${y}) scale(${scale}) translate(${-x}, ${-y})`
         }
         
         node.setAttribute('transform', transformString)
@@ -908,11 +908,9 @@ class SVG {
         // center symbol
         const xShift = 12 // px
         const yShift = -2 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
+        wrapper.setAttribute('transform', `translate(${x + xShift}, ${y + yShift}) scale(${this.settings.SYMBOL_SCALE}) translate(${-x - xShift}, ${-y - yShift})`)
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
         node.setAttribute('d', 'm ' + x + ', ' + y + ' -0.563078,-1.1261527 -1.689228,-0.5630765 -1.689229,0 -1.68923,0.5630765 -0.563076,1.1261527 0.563076,1.12615272 1.126154,0.56307636 2.815381,0.56307635 1.126152,0.56307647 0.563078,1.1261526 0,0.5630763 -0.563078,1.1261528 -1.689228,0.5630764 -1.689229,0 -1.68923,-0.5630764 -0.563076,-1.1261528 m -6.756916,-10.135374 -4.504611,11.8246032 m 4.504611,-11.8246032 4.504611,11.8246032 m -7.3199925,-3.94153457 5.6307625,0')
@@ -930,11 +928,9 @@ class SVG {
         // center symbol
         const xShift = 22 // px
         const yShift = -1 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
+        wrapper.setAttribute('transform', `translate(${x + xShift}, ${y + yShift}) scale(${this.settings.SYMBOL_SCALE}) translate(${-x - xShift}, ${-y - yShift})`)
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
         node.setAttribute('d', 'm ' + x + ', ' + y + ' -0.5625,-1.125 -1.6875,-0.5625 -1.6875,0 -1.6875,0.5625 -0.5625,1.125 0.5625,1.125 1.125,0.5625 2.8125,0.5625 1.125,0.5625 0.5625,1.125 0,0.5625 -0.5625,1.125 -1.6875,0.5625 -1.6875,0 -1.6875,-0.5625 -0.5625,-1.125 m -11.25,-10.125 0,11.8125 m 0,-11.8125 3.9375,0 1.6875,0.5625 1.125,1.125 0.5625,1.125 0.5625,1.6875 0,2.8125 -0.5625,1.6875 -0.5625,1.125 -1.125,1.125 -1.6875,0.5625 -3.9375,0')
@@ -951,11 +947,9 @@ class SVG {
         // center symbol
         const xShift = 19 // px
         const yShift = -4 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
+        wrapper.setAttribute('transform', `translate(${x + xShift}, ${y + yShift}) scale(${this.settings.SYMBOL_SCALE}) translate(${-x - xShift}, ${-y - yShift})`)
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
         node.setAttribute('d', 'm ' + x + ', ' + y + ' -1.004085,-1.0040845 -1.004084,-0.5020423 -1.506127,0 -1.004085,0.5020423 -1.004084,1.0040845 -0.502043,1.50612689 0,1.00408458 0.502043,1.50612683 1.004084,1.0040846 1.004085,0.5020423 1.506127,0 1.004084,-0.5020423 1.004085,-1.0040846 m -17.57148,-9.0367612 0,10.5428881 m 0,-10.5428881 4.016338,10.5428881 m 4.016338,-10.5428881 -4.016338,10.5428881 m 4.016338,-10.5428881 0,10.5428881')
@@ -972,11 +966,9 @@ class SVG {
         // center symbol
         const xShift = 19 // px
         const yShift = 2 // px
-        x = Math.round(x + (xShift * this.settings.SYMBOL_SCALE))
-        y = Math.round(y + (yShift * this.settings.SYMBOL_SCALE))
 
         const wrapper = this.document.createElementNS(this.context.root.namespaceURI, 'g')
-        wrapper.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
+        wrapper.setAttribute('transform', `translate(${x + xShift}, ${y + yShift}) scale(${this.settings.SYMBOL_SCALE}) translate(${-x - xShift}, ${-y - yShift})`)
 
         const node = this.document.createElementNS(this.context.root.namespaceURI, 'path')
         node.setAttribute('d', 'm ' + x + ', ' + y + ' -1.208852,-1.2088514 -1.208851,-0.6044258 -1.813278,0 -1.208852,0.6044258 -1.20885,1.2088514 -0.604426,1.81327715 0,1.20885135 0.604426,1.8132772 1.20885,1.2088513 1.208852,0.6044259 1.813278,0 1.208851,-0.6044259 1.208852,-1.2088513 m -11.4840902,-10.8796629 0,12.6929401')
@@ -1216,7 +1208,7 @@ class SVG {
         text.setAttribute('font-family', 'serif')
         text.setAttribute('dominant-baseline', 'central')
         text.appendChild(this.document.createTextNode(txt))
-        text.setAttribute('transform', 'translate(' + (-x * (this.settings.SYMBOL_SCALE - 1)) + ',' + (-y * (this.settings.SYMBOL_SCALE - 1)) + ') scale(' + this.settings.SYMBOL_SCALE + ')')
+        text.setAttribute('transform', `translate(${x}, ${y}) scale(${this.settings.SYMBOL_SCALE}) translate(${-x}, ${-y})`)
         return text
     }
 }

@@ -80,7 +80,7 @@ class Chart {
      * @param {int} factor
      */
     scale(factor: number): void {
-        this.paper.root.setAttribute('transform', 'translate(' + (-this.cx * (factor - 1)) + ',' + (-this.cy * (factor - 1)) + ') scale(' + factor + ')')
+        this.paper.root.setAttribute('transform', `translate(${this.cx}, ${this.cy}) scale(${factor}) translate(${-this.cx}, ${-this.cy})`)
     }
 
     /**
